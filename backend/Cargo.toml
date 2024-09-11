@@ -1,0 +1,78 @@
+[package]
+name = "vicc_explorer"
+version = "0.1.0"
+edition = "2021"
+
+[profile.dev]
+opt-level = 1
+
+[profile.dev.package."*"]
+opt-level = 3
+
+[profile.release]
+codegen-units = 1
+lto = "fat"
+panic = "abort"
+
+[dependencies]
+
+[lints.rust]
+dead-code = "allow"
+unreachable-patterns = "allow"
+absolute-paths-not-starting-with-crate = "warn"
+deprecated-in-future = "warn"
+rust_2018_idioms = { level = "warn", priority = -1 }
+elided-lifetimes-in-paths = "warn"
+explicit-outlives-requirements = "warn"
+let-underscore-drop = "warn"
+meta-variable-misuse = "warn"
+missing-copy-implementations = "warn"
+missing-debug-implementations = "warn"
+missing-abi = "warn"
+ffi-unwind-calls = "warn"
+non-local-definitions = "warn"
+redundant-lifetimes = "warn"
+rust-2021-incompatible-closure-captures = "warn"
+rust-2021-incompatible-or-patterns = "warn"
+rust-2021-prefixes-incompatible-syntax = "warn"
+rust-2021-prelude-collisions = "warn"
+single-use-lifetimes = "warn"
+trivial-casts = "warn"
+trivial-numeric-casts = "warn"
+unit-bindings = "warn"
+unnameable-types = "warn"
+unused-extern-crates = "warn"
+unused-import-braces = "warn"
+unused-lifetimes = "warn"
+unused-qualifications = "warn"
+variant-size-differences = "warn"
+
+[lints.clippy]
+all = { level = "warn", priority = -1 }
+correctness = { level = "warn", priority = -1 }
+complexity = { level = "warn", priority = -1 }
+style = { level = "warn", priority = -1 }
+pedantic = { level = "warn", priority = -1 }
+nursery = { level = "warn", priority = -1 }
+suspicious = { level = "warn", priority = -1 }
+restriction = { level = "warn", priority = -1 }
+perf = { level = "warn", priority = -1 }
+cargo = { level = "warn", priority = -1 }
+blanket_clippy_restriction_lints = "allow"
+missing_docs_in_private_items = "allow"
+missing_errors_doc = "allow"
+multiple_crate_versions = "allow"
+pub_with_shorthand = "allow"
+self_named_module_files = "allow"
+implicit_return = "allow"
+question_mark_used = "allow"
+ref_patterns = "allow"
+separated_literal_suffix = "allow"
+arithmetic_side_effects = "allow"
+semicolon_outside_block = "allow"
+float_arithmetic = "allow"
+print_stderr = "allow"
+print_stdout = "allow"
+shadow_same = "allow"
+module_name_repetitions = "allow"
+min_ident_chars = "allow"
