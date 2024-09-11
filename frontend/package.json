@@ -1,0 +1,16 @@
+{
+  "name": "vicc_explorer",
+  "version": "1.0.0",
+  "main": "dist/main.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "electron ."
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "electron": "^32.0.2",
+    "typescript": "^5.6.2"
+  }
+}
