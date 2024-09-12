@@ -16,7 +16,7 @@ Ide írjátok majd, hogy kb miről fog szólni a projektetek
 
 ## Csapattagok
 
-+ Rendes nevetek (neptunkódotok)
++ Molnár Máté Norbert (GBWYKF)
 ---
 
 ## Senior
