@@ -1,31 +1,30 @@
 use axum::{routing, Router};
-use std::env::args;
 use tokio::net::TcpListener;
 use tower_http::trace::TraceLayer;
+use tracing::debug;
 use tracing_subscriber::fmt;
-
-use vicc_explorer::routes::health_check;
-
-const DEFAULT_PORT: u16 = 8080;
+use vicc_explorer::{configuration::Settings, routes::health_check};
 
 #[tokio::main]
 async fn main() {
     fmt::init();
 
+    let config = Settings::parse().unwrap();
+
     let app = Router::new()
         .route("/health_check", routing::get(health_check::get))
         .layer(TraceLayer::new_for_http());
 
-    let listener = TcpListener::bind(format!(
-        "0.0.0.0:{}",
-        args().nth(1).unwrap_or(DEFAULT_PORT.to_string())
-    ))
-    .await
-    .expect("Failed to bind to address.");
-    println!(
-        "Listening on {:?}",
-        listener.local_addr().expect("Address resolution failed.")
-    );
+    let listener = {
+        let address =
+            format!("{}:{}", config.application.host, config.application.port,);
+
+        TcpListener::bind(address)
+            .await
+            .expect("Failed to bind to address.")
+    };
+
+    debug!("listening on {}", listener.local_addr().unwrap());
 
     axum::serve(listener, app)
         .await

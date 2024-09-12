@@ -3,6 +3,13 @@ name = "vicc_explorer"
 version = "0.1.0"
 edition = "2021"
 
+repository = "https://github.com/Valesz1022/AFP1_kisProjekt"
+readme = "../README.md"
+
+categories = ["web-programming"]
+description = "AFP1 beadandó vicc portál backend."
+keywords = ["web", "jokes"]
+
 [profile.dev]
 opt-level = 1
 
@@ -19,6 +26,7 @@ anyhow = "1.0.88"
 axum = { version = "0.7.5", features = ["macros", "tracing"] }
 config = "0.14.0"
 serde = { version = "1.0.210", features = ["derive"] }
+serde-aux = "4.5.0"
 serde_json = "1.0.128"
 sqlx = { version = "0.8.2", features = ["runtime-tokio", "macros"] }
 thiserror = "1.0.63"
@@ -83,3 +91,4 @@ arithmetic_side_effects = "allow"
 semicolon_outside_block = "allow"
 shadow_same = "allow"
 module_name_repetitions = "allow"
+error_impl_error = "allow"
