@@ -3,6 +3,7 @@ use std::{env, io};
 use config::{Config, ConfigError};
 use serde::Deserialize;
 use serde_aux::field_attributes;
+use sqlx::mysql::MySqlConnectOptions;
 use thiserror::Error;
 
 #[non_exhaustive]
@@ -26,8 +27,35 @@ pub struct ApplicationSettings {
 
 #[non_exhaustive]
 #[derive(Debug, Deserialize)]
+pub struct DatabaseSettings {
+    pub username: String,
+    pub password: String,
+    #[serde(
+        deserialize_with = "field_attributes::deserialize_number_from_string"
+    )]
+    pub port: u16,
+    pub host: String,
+    pub database_name: String,
+}
+
+impl DatabaseSettings {
+    #[must_use]
+    #[inline]
+    pub fn connect_options(&self) -> MySqlConnectOptions {
+        MySqlConnectOptions::new()
+            .host(&self.host)
+            .username(&self.username)
+            .password(&self.password)
+            .port(self.port)
+            .database(&self.database_name)
+    }
+}
+
+#[non_exhaustive]
+#[derive(Debug, Deserialize)]
 pub struct Settings {
     pub application: ApplicationSettings,
+    pub database: DatabaseSettings,
 }
 
 impl Settings {
