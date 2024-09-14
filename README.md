@@ -17,6 +17,7 @@ Ide írjátok majd, hogy kb miről fog szólni a projektetek
 ## Csapattagok
 
 + Molnár Máté Norbert (GBWYKF)
++ Zana Domán (Z17V4D)
 ---
 
 ## Senior
