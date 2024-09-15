@@ -21,6 +21,22 @@ lesz, mely különösen az EKKE C épületnél történő dolgokat célozza meg.
 
 ## Vágyalomrendszer
 
+Olyan asztali alkalmazás létrehozása, amely minden PC-ről tökéletesen elérhető 
+és bármely képernyő mérethez igazítható.
+Ennek megoldásához tökéletes egy Electron alkalmazás létrehozása, egy adatbázis
+segítségével.
+A képernyő méretbeli különbségeket reszponzív megoldással tudnánk megoldani.
+Fontos lenne, hogy ne csak egy operációs rendszeren működjön, hanem Windowson, 
+Linuxon és MacOs-en.
+Törekedünk olyan kódbázis kialakítására, melynek a bővítése a későbbiekben nem 
+okoz, majd gondot.
+Törekvés modern technológiák, keretrendszerek, stílusok és konvenciók 
+használatára, mint a Rust és az Electron.
+Fontos a felhasználók szétválasztása különböző jogosultságok szerint. 
+Ezek az admin, akik tudnak posztot törölni.
+Felhasználók, akik vicceket írnak és pontozzák a többi viccet.
+Látogatók, akik csak olvasni tudják a poénokat.
+
 ## A jelenlegi üzleti folyamatok modellje
 
 ## Igényelt üzleti folyamatok modellje
