@@ -18,6 +18,7 @@ Ide írjátok majd, hogy kb miről fog szólni a projektetek
 
 + Molnár Máté Norbert (GBWYKF)
 + Zana Domán (Z17V4D)
++ Gunics Roland (SWTR0U)
 ---
 
 ## Senior
