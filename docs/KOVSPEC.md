@@ -75,6 +75,8 @@ tartalmaihoz.
 | K10   | Jogosultság | Jogosultsági szintek | - Admin: bejegyzések törlése, - Felhasználó: tartalmak megtekintése, saját bejegyzések létrehozása.<br> - Látogató: bejegyzések megtekintése. |
 ## Fogalomtár
 
-+ **POSZT** __(angol: post)__  A felhasználók által a közösségi felületekre beküldött / feltöltött szöveges vagy audiovizuális tartalom. 
++ **POSZT** __(angol: post)__  A felhasználók által a közösségi felületekre 
+beküldött / feltöltött szöveges vagy audiovizuális tartalom. 
 + **ADMIN** __(angol: admin)__ Az oldal adminisztrálásáért felelős személy
-+ **MÉM** __(angol: meme)__ Egy humoros kép, vagy szöveg, amit gyorsan másolnak és osztanak meg az interneten
++ **MÉM** __(angol: meme)__ Egy humoros kép, vagy szöveg, amit gyorsan 
+másolnak és osztanak meg az interneten
