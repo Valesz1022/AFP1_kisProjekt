@@ -39,6 +39,14 @@ Látogatók, akik csak olvasni tudják a poénokat.
 
 ## A jelenlegi üzleti folyamatok modellje
 
++ Igényfelmérés: Felhasználók formon keresztüli igényfelmérése, hogy a jövőben 
+milyen funkciókat használnának.
++ Regisztráció, adatok kezelése: A látogatók képesek egy regisztrációs form 
+kitöltése után saját fiókot nyitni, azokban az adataikat 
+kezelni / megváltoztatni.
++ Adminisztrátorok keresése: Probléma és hibajelentés esetén, az adminok 
+eléréseit lehet megtekinteni
+
 ## Igényelt üzleti folyamatok modellje
 
 ## Követelménylista
