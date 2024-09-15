@@ -2,4 +2,15 @@
 //! URL alapján. Egy-egy adott végponton belül az adott HTTP method nevével
 //! található függvény a tényleges kontroller.
 
-pub mod health_check;
+use std::sync::Arc;
+
+use axum::{routing, Router};
+
+use crate::AppState;
+
+mod health_check;
+
+/// A végpontok csoportosítása, és egy útvonalvezetőbe tétele.
+pub fn router() -> Router<Arc<AppState>> {
+    Router::new().route("/health_check", routing::get(health_check::get))
+}

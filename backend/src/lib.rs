@@ -1,19 +1,20 @@
 use std::{io, sync::Arc};
 
-use anyhow::Context;
-use axum::{routing, serve::Serve, Router};
+use axum::{serve::Serve, Router};
 use configuration::Settings;
 use sqlx::{mysql::MySqlPoolOptions, MySqlPool};
+use thiserror::Error;
 use tokio::net::TcpListener;
 use tower_http::trace::TraceLayer;
 use tracing::debug;
 
-use crate::routes::health_check;
-
 pub mod configuration;
 pub(crate) mod routes;
 
+/// A webszerver állapota, végpontokban elérhetővé téve referencia számlált
+/// módon.
 pub(crate) struct AppState {
+    /// Az adatbázishoz való kommunikáláshoz kapcsolatok pool-ja.
     pub connection_pool: MySqlPool,
 }
 
@@ -24,15 +25,29 @@ impl AppState {
     }
 }
 
+/// Tartalmazza a webszervert, könnyebbé téve annak futtatását, és felépítését.
 #[non_exhaustive]
 #[derive(Debug)]
 pub struct Application {
     server: Serve<Router, Router>,
 }
 
+/// Az alkalmazás felépítése közben felmerülhető hibák.
+#[non_exhaustive]
+#[derive(Debug, Error)]
+pub enum BuildError {
+    /// A megadott host-ra és port-ra való csatlakozás közben felmerülő hiba.
+    /// Általában foglalt a port, ezért nem sikerült a csatlakozás.
+    #[error("Failed to bind to address.")]
+    BindAddress(#[from] io::Error),
+}
+
 impl Application {
+    /// Az alkalmazás felépítése, konfigurálása.
+    /// Csatlakozik az adatbázishoz, illetve a port-hoz.
+    /// Konfigurációs beállításokat felhasználja.
     #[inline]
-    pub async fn build(configuration: Settings) -> anyhow::Result<Self> {
+    pub async fn build(configuration: Settings) -> Result<Self, BuildError> {
         let connection_pool = MySqlPoolOptions::new()
             .connect_lazy_with(configuration.database.connect_options());
 
@@ -42,22 +57,14 @@ impl Application {
                 configuration.application.host, configuration.application.port,
             );
 
-            TcpListener::bind(address)
-                .await
-                .context("Failed to bind to address.")?
+            TcpListener::bind(address).await?
         };
 
-        debug!(
-            "listening on {}",
-            listener
-                .local_addr()
-                .context("Failed to get local address from TCP listener.")?
-        );
+        debug!("listening on {}", listener.local_addr()?);
 
         let app_state = Arc::new(AppState::new(connection_pool));
 
-        let app = Router::new()
-            .route("/health_check", routing::get(health_check::get))
+        let app = routes::router()
             .layer(TraceLayer::new_for_http())
             .with_state(app_state);
 
@@ -66,6 +73,8 @@ impl Application {
         })
     }
 
+    /// Elindíta a szervert, és futtatja, amíg az egy javíthatatlan hibát nem
+    /// kap, ebben az esetben leáll.
     #[inline]
     pub async fn run_until_stopped(self) -> io::Result<()> {
         self.server.await

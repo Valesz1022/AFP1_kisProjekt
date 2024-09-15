@@ -5,7 +5,7 @@ use vicc_explorer::{configuration::Settings, Application};
 async fn main() {
     fmt::init();
 
-    let config = Settings::parse().unwrap();
+    let config = Settings::parse("base.toml").unwrap();
 
     let app = Application::build(config).await.unwrap();
 
