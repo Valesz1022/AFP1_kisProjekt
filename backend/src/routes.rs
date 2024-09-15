@@ -8,7 +8,7 @@ use axum::{routing, Router};
 
 use crate::AppState;
 
-mod health_check;
+pub mod health_check;
 
 /// A végpontok csoportosítása, és egy útvonalvezetőbe tétele.
 pub fn router() -> Router<Arc<AppState>> {

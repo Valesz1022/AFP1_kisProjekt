@@ -1,15 +1,17 @@
 use std::{io, sync::Arc};
 
-use axum::{serve::Serve, Router};
+use axum::{extract::Request, serve::Serve, Router};
 use configuration::Settings;
 use sqlx::{mysql::MySqlPoolOptions, MySqlPool};
 use thiserror::Error;
 use tokio::net::TcpListener;
 use tower_http::trace::TraceLayer;
-use tracing::debug;
+use tracing::{debug, span, Level};
+use uuid::Uuid;
 
 pub mod configuration;
 pub(crate) mod routes;
+pub mod telemetry;
 
 /// A webszerver állapota, végpontokban elérhetővé téve referencia számlált
 /// módon.
@@ -65,7 +67,20 @@ impl Application {
         let app_state = Arc::new(AppState::new(connection_pool));
 
         let app = routes::router()
-            .layer(TraceLayer::new_for_http())
+            .layer(TraceLayer::new_for_http().make_span_with(
+                |request: &Request| {
+                    let request_id = Uuid::new_v4().to_string();
+
+                    span!{
+                        Level::DEBUG,
+                        "request",
+                        %request_id,
+                        method = ?request.method(),
+                        uri = %request.uri(),
+                        version = ?request.version(),
+                    }
+                }
+            ))
             .with_state(app_state);
 
         Ok(Self {

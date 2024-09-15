@@ -32,8 +32,9 @@ sqlx = { version = "0.8.2", features = ["runtime-tokio", "macros", "mysql"] }
 thiserror = "1.0.63"
 tokio = { version = "1.40.0", features = ["rt-multi-thread"] }
 tower-http = { version = "0.5.2", features = ["trace"] }
-tracing = "0.1.40"
+tracing = { version = "0.1.40", features = ["attributes"] }
 tracing-subscriber = { version = "0.3.18", features = ["env-filter"] }
+uuid = { version = "1.10.0", features = ["v4"] }
 
 [lints.rust]
 dead-code = "allow"
