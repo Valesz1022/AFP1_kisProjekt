@@ -11,6 +11,15 @@
 ## Követelménylista
 
 ## Használati esetek
++ **ADMIN**: Feladata a rendszer felügyelete, karbantartása, tesztelése. Ebből 
+következően minden szerepkörbe be tud lépni, hogy ellenőrizze azok hibamentes 
+üzemelését. Joguk van egy bejegyzést, kommentet törölni, vagy módosítani,
+hiszen feladatuk moderálni a portálon való tartalmakat.
++ **FELHASZNÁLÓ**: Jogában áll az oldalon megjelenő minden tartalom megtekintése,
+valamit ezekre adhat visszajelzéseket upvote-downvote formátumban. Bejegyzéseket
+posztolhat, mások bejegyzésére írhat megjegyzéseket, illetve azokat is értékelheti.
++ **MEGTEKINTŐ**: Az oldalon megjelenő bejegyzéseket, illetve ahhoz hozzászólásokat
+megtekintheti, viszont ezeket nem értékelheti, illetve nem írhat új hozzászólást.
 
 ## Megfeleltetés, hogyan fedik le a használati eseteket a követelmények
 
