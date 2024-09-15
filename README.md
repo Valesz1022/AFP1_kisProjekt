@@ -4,7 +4,13 @@
 
 ## Projekt leírása
 
-Ide írjátok majd, hogy kb miről fog szólni a projektetek
+A Vicc Explorer egy viccportál, mely asztali alkalmazás formátumban elérhető.
+Lehetővé teszi a különböző vicces tartalmak megosztását, azok értékelését,
+illetve megjegyzések írását. Amikor először látogatja egy felhasználó a portált,
+látogató rangban csatlakozik, így nincsen jogosultsája új tartalom hozzáadására,
+vagy meglévő tartalom értékelésére. Ha regisztrál, illetve bejelentkezik, már
+lesz ezekre jogosultsága.\
+A portálon megjelenő tartalmakat adminisztrátorok felügyelik.
 
 ---
 
