@@ -54,6 +54,15 @@ megtekintheti, viszont ezeket nem értékelheti, illetve nem írhat új hozzász
 ## Megfeleltetés, hogyan fedik le a használati eseteket a követelmények
 
 ## Képernyőtervek
+| kép | Leírás|
+| :--:|:-----:|
+| ![fooldal.png](https://github.com/Valesz1022/AFP1_kisProjekt/blob/main/images/fooldal.png) | A  főoldal terve |
+| ![fooldal_admin.png](https://github.com/Valesz1022/AFP1_kisProjekt/blob/main/images/fooldal_admin.png) | A főoldal kinézete admin szemszögből |
+| ![fooldal_felhasznalo.png](https://github.com/Valesz1022/AFP1_kisProjekt/blob/main/images/fooldal_felhasznalo.png) | A főoldal kinézete egy mezei felhasználó szemszögéből |
+| ![Bejelentkezes.png](https://github.com/Valesz1022/AFP1_kisProjekt/blob/main/images/Bejelentkezes.png) | A bejelentkezés oldal terve |
+| ![Regisztracio.png](https://github.com/Valesz1022/AFP1_kisProjekt/blob/main/images/Regisztracio.png) | A regisztrációs oldal terve |
+| ![Uj_poszt.png](https://github.com/Valesz1022/AFP1_kisProjekt/blob/main/images/Uj_poszt.png) | Az új vicc posztolásához felugró ablak
+
 
 ## Forgatókönyvek
 
