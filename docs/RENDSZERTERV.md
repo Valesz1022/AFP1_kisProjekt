@@ -78,6 +78,19 @@ csak tervezve.
 
 ## Funkcionális terv
 
+### 5.1 Rendszerszereplők
+
++ **ADMIN**
+    - a rendszer felügyelete az elsődleges feladata, ennek tesztelésére minden szerepkörbe be tud lépni, hogy ellenőrizze azok hibamentes üzemelését
+
++ **FELHASZNÁLÓ**
+    - jogában áll az oldalon megjelenő minden tartalom megtekintése, valamint az ezekre adott visszajelző rendszerek használata
+    - különböző bejegyzéseket posztolhat, más bejegyzésekre pontokat adhat
+
++ **LÁTOGATÓ**
+    - az oldalon megjelenő bejegyzéseket tekintheti meg
+    - a bejegyzéssel nem interaktálhat csak ha rendelkezik profillal
+
 ## Fizikai környezet
 - Az alkalmazás asztali platformra készült, amely elérhető bármilyen PC-ről,
 internet hozzáférés mellett.
