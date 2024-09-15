@@ -115,6 +115,27 @@ nyelv, lehetővé teszi statikus típusok használatát.
 
 ## Adatbázis terv
 
+* TABLE - USER
+    + STRING - USERNAME (PRIMARY_KEY)
+    + STRING - PASSWORD
+    + NUMBER - ADMIN (0 ~ USER; 1 ~ ADMIN)
+
+* TABLE - JOKES
+    + NUMBER - ID (PRIMARY_KEY, AUTO_INCREMENT)
+    + STRING - AUTHOR (FOREIGN_KEY(USER-USERNAME))
+    + STRING - CONTENT (UNIQUE)
+    + NUMBER - UPVOTES
+    + NUMBER - DOWNVOTES
+
+* TABLE - VOTES
+    + NUMBER - USER (FOREIGN_KEY(USER-USERNAME))
+    + NUMBER - JOKE (FOREIGN_KEY(JOKES-ID))
+    + INT - VOTE (-1 ~ DOWN; 0 ~ INTACT; 1 ~ UP)
+
+* TABLE - SAVED
+    + STRING - USER (FOREIGN_KEY(USER-USERNAME))
+    + NUMBER - JOKE (FOREIGN_KEY(JOKES-ID))
+
 ## Implementációs terv
 ### Backend
 A webszerveren futú Rust alkalmazás és adatbázis tartalmazza az üzleti logikát,
