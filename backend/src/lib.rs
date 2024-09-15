@@ -71,7 +71,7 @@ impl Application {
                 |request: &Request| {
                     let request_id = Uuid::new_v4().to_string();
 
-                    span!{
+                    span! {
                         Level::DEBUG,
                         "request",
                         %request_id,
@@ -79,7 +79,7 @@ impl Application {
                         uri = %request.uri(),
                         version = ?request.version(),
                     }
-                }
+                },
             ))
             .with_state(app_state);
 

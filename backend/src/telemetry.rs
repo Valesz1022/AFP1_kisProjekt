@@ -3,7 +3,10 @@
 //! végpontokban való naplózást.
 
 use tracing_subscriber::{
-    fmt::{self, format::FmtSpan}, layer::SubscriberExt, util::SubscriberInitExt, EnvFilter
+    fmt::{self, format::FmtSpan},
+    layer::SubscriberExt,
+    util::SubscriberInitExt,
+    EnvFilter,
 };
 
 /// A naplózáshoz szükséges feliratkozó (Subscriber) létrehozása, és
