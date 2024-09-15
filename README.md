@@ -21,7 +21,7 @@ A portálon megjelenő tartalmakat adminisztrátorok felügyelik.
 ### Backend
 + Használt nyelvek: Rust, SQL
 + Package Manager: cargo
-+ Web keretrenszer: Axum
++ Web keretrendszer: Axum
 + Aszinkron futtatási környezet: tokio
 + Adatbáziskapcsolat: sqlx
 + Struktúrált naplózás: tracing
