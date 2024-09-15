@@ -3,6 +3,36 @@
 ## Jelenlegi helyzet leírása
 
 ## Vágyalomrendszer leírása
+Olyan asztali alkalmazás létrehozása, amely minden PC-ről tökéletesen elérhető
+és bármely képernyőmérethez igazítható.\
+Fontos lenne, hogy az asztali alkalmazás bármilyen operációs rendszeren elérhető
+legyen, hiszen nem csak egy platformra szeretnénk elérhetővé tenni a portált.\
+Ennek megoldásához egy Electron keretrendszerben írt alkalmazás létrehozása 
+tökéletes, szerverként pedig egy REST API megoldás a megfelelő, amely kommunikál
+egy adatbázissal.\
+A képernyő méretbeli különbségeit reszponzív megoldással lehetne megoldani, ez
+CSS-ben megoldható.\
+A frontend dinamikusságára mindenképpen JavaScript használata szükséges, viszont
+a statikus tipizáláshoz a Microsoft által készített TypeScript használata még 
+jobb megoldás.\
+A szervert mindenképpen Rust nyelven szeretnénk megvalósítani, hiszen gyorsasága
+és biztonsága fontos a megfelelő működéshez akár a jövőben is. Az adatbázis
+kezelésére SQL nyelv az optimális, hiszen ez pontosan erre lett kitalálva.
+Célunk, hogy tiszta kódot kapjunk, hogy a későbbiekben csatlakozó webfejlesztő
+munkatársak bármikor könnyedén tudjanak csatlakozni a fejlesztéshez.\
+Fontos lenne, ha a portálon megkülönböztetnénk a felhasználókat és adminisztrátorokat, 
+hisz nem szeretnénk, hogy bármilyen rossz indulatú felhasználó be tudjon nyúlni 
+a portálba, akár törölni tartalmat.\ 
+Erre tökéletes megoldás a rangok besorolása, számunkra 3 főbb rangra lenne szükség:
+Admin, Felhasználó és Látogató, természetesen nem lenne baj, ha ezt később tudnánk
+bővíteni, akár egy Moderátor státusszal.\
+Az adatbázis séma szempontjából nincsenek nagy elvárások, viszont mindenképpen
+fontos, hogy a különböző egyedeket külön táblában tároljuk, és skálázás későbbiekben
+megoldható legyen.\
+A portál tényleges kinézetére való terv a Képernyőtervek pont alatt található
+a terv.\
+Ezek ötvözése úgy gondoljuk, hogy egy egyszerűen továbbfejleszthető, skálázható
+portál készítésére alkalmas, amely megfelel minden követelmények.
 
 ## Jelenlegi üzleti folyamatok modellje
 
