@@ -63,34 +63,14 @@ tartalmaihoz.
 
 | Id    | Modul     | Név           | Leírás |
 | :---: | ---       | ---           | :---   |
-| K1    | Felület   | Bejelentkezés | A felhasználók itt tudnak bejelentkezni 
-a rendszerbe, ha bejegyzést szeretnének létrehozni. Probléma esetén üzenetet 
-küldeni a rendszert          karbantartóknak, illetve a saját profiljával 
-felmerült problémákat javíthatja, ez lehet elfelejtett vagy jelszó. |
-| K2    | Felület   | Bejegyzések   | A felhasználók az oldal megnyitása 
-után kezdőképernyőként a Bejegyzések nevű oldalra kerülnek, ahol megtekinthetik
- az aktuális posztokat, bejelentkezés után interaktálhatnak azokkal, 
-bejelentkezés nélkül csak a megtekintésükre van mód. |
-| K3    | Felület   | Kategóriák    | A felhasználók választani tudnak a 
-megtekinteni kívánt tartalmak között, itt megjelennek formátum és tartalom 
-szerint szétbontva. |
-| K4    | Felület   | Profil        | A felhasználók a saját profiljuk 
-módosításait eszközölhetik, láthatóvá válnak az adott bejegyzésekre küldött 
-interakciók, pontozások is.|
-| K5    | Felület   | Bejegyzés létrehozása | A felhasználó beküldhet saját 
-viccet, mém-et vagy gif-et, amelyet egy magasabb jogosultsággal rendelkező 
-elbírálása után megtekinthet a főoldali bejegyzések között. |
-| K6    | Felület   | Regisztráció  | A felhasználók ezen az oldalon tudnak 
-saját fiókot létrehozni a rendszerben, így jogokat kapni a saját tartalmaik 
-megosztására.|
-| K7   | Modifikáció | Elfelejtett jelszó | Ha a felhasználó nem emlékszik a 
-megadott jelszavára, akkor itt van lehetősége egy adminhoz fordulni, vagy újat 
-generálni. |
-| K8   | Modifikáció | Jelszó módosítása  | A felhasználónak lehetősége van 
-módosítani saját jelszavát, megadva a régi majd az új verziót. |
-| K9   | Modifikáció | Felhasználó módosítása | A felhasználónak lehetősége 
-van saját felhasználónevének módosítására |
-| K10   | Jogosultság | Jogosultsági szintek | - Admin: bejegyzések törlése, - 
-Felhasználó: tartalmak megtekintése, saját bejegyzések létrehozása.<br> - 
-Látogató: bejegyzések megtekintése. |
+| K1    | Felület   | Bejelentkezés | A felhasználók itt tudnak bejelentkezni a rendszerbe, ha bejegyzést szeretnének létrehozni. Probléma esetén üzenetet küldeni a rendszert          karbantartóknak, illetve a saját profiljával felmerült problémákat javíthatja, ez lehet elfelejtett vagy jelszó. |
+| K2    | Felület   | Bejegyzések   | A felhasználók az oldal megnyitása után kezdőképernyőként a Bejegyzések nevű oldalra kerülnek, ahol megtekinthetik az aktuális posztokat, bejelentkezés után interaktálhatnak azokkal, bejelentkezés nélkül csak a megtekintésükre van mód. |
+| K3    | Felület   | Kategóriák    | A felhasználók választani tudnak a megtekinteni kívánt tartalmak között, itt megjelennek formátum és tartalom szerint szétbontva. |
+| K4    | Felület   | Profil        | A felhasználók a saját profiljuk módosításait eszközölhetik, láthatóvá válnak az adott bejegyzésekre küldött interakciók, pontozások is.|
+| K5    | Felület   | Bejegyzés létrehozása | A felhasználó beküldhet saját viccet, mém-et vagy gif-et, amelyet egy magasabb jogosultsággal rendelkező elbírálása után megtekinthet a főoldali bejegyzések között. |
+| K6    | Felület   | Regisztráció  | A felhasználók ezen az oldalon tudnak saját fiókot létrehozni a rendszerben, így jogokat kapni a saját tartalmaik megosztására.|
+| K7   | Modifikáció | Elfelejtett jelszó | Ha a felhasználó nem emlékszik a megadott jelszavára, akkor itt van lehetősége egy adminhoz fordulni, vagy újat generálni. |
+| K8   | Modifikáció | Jelszó módosítása  | A felhasználónak lehetősége van módosítani saját jelszavát, megadva a régi majd az új verziót. |
+| K9   | Modifikáció | Felhasználó módosítása | A felhasználónak lehetősége van saját felhasználónevének módosítására |
+| K10   | Jogosultság | Jogosultsági szintek | - Admin: bejegyzések törlése, - Felhasználó: tartalmak megtekintése, saját bejegyzések létrehozása.<br> - Látogató: bejegyzések megtekintése. |
 ## Fogalomtár
