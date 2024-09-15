@@ -49,6 +49,16 @@ eléréseit lehet megtekinteni
 
 ## Igényelt üzleti folyamatok modellje
 
++ Posztok jutalmazása: A felhasználók pontokkal illethetik a számukra 
+szimpatikus posztokat.
++ Szűrés a legkedveltebb posztok között: A posztokat az előbb említett 
+pontrendszer alapján szűrni is lehessen, pl.: A legkedveltebb legelsőnek 
+jelenik meg.
++ Saját profil szerkesztés: A regisztrált felhasználók a saját fiókjukat 
+tudják szerkeszteni, pl.: név szerkesztés.
++ Rang rendszer: A látogatók három rangba lesznek besorolva (Fejlesztő, 
+Felhasználó, Látogató), amik más-más hozzáféréssel rendelkeznek az oldal 
+tartalmaihoz.
 ## Követelménylista
 
 ## Fogalomtár
