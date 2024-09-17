@@ -56,6 +56,21 @@ csak tervezve.
 
 ## Üzleti folyamatok modellje
 
+* Adminisztrátor
+    + Bejelentkezés
+    + Posztok olvasása
+    + Posztok értékelése
+    + Posztok létrehozása
+    + Posztok törlése
+* Felhasználó
+    + Bejelentkezés
+    + Posztok olvasása
+    + Posztok értékelése
+    + Posztok lérehozása
+* Látogató
+    + Regisztráció
+    + Posztok olvasása
+
 ## Követelmények
 
 ### Funkcionális követelmények
