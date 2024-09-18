@@ -3,8 +3,8 @@ use serde::{Deserialize, Serialize};
 
 #[derive(FromRow, Deserialize, Serialize)]
 pub struct User {
-    name: String,
-    password: String,
+    pub name: String,
+    pub password: String,
     #[serde(skip_deserializing)]
     admin: bool,
 }
