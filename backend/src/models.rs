@@ -1,16 +1,29 @@
-use sqlx::{FromRow, MySqlConnection};
 use serde::{Deserialize, Serialize};
+use sqlx::FromRow;
 
-#[derive(FromRow, Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, FromRow)]
 pub struct User {
     pub name: String,
     pub password: String,
-    #[serde(skip_deserializing)]
-    admin: bool,
 }
 
-impl User {
-    pub async fn get_all(conn: &mut MySqlConnection) -> Result<Vec<Self>, sqlx::Error> {
-        sqlx::query_as("SELECT * FROM users;").fetch_all(conn).await
-    }
+#[derive(Deserialize, Serialize, FromRow)]
+pub struct Joke {
+    pub id: u64,
+    pub user_name: String,
+    pub content: String,
+    pub votes: i64,
+}
+
+#[derive(Deserialize, Serialize, FromRow)]
+pub struct Vote {
+    pub user_name: String,
+    pub joke_id: u64,
+    pub vote: i8,
+}
+
+#[derive(Deserialize, Serialize, FromRow)]
+pub struct Saved {
+    pub user_name: String,
+    pub joke_id: u64,
 }

@@ -10,6 +10,7 @@ use crate::AppState;
 
 pub mod health_check;
 pub mod users;
+pub mod saved;
 
 /// A végpontok csoportosítása, és egy útvonalvezetőbe tétele.
 pub fn router() -> Router<Arc<AppState>> {

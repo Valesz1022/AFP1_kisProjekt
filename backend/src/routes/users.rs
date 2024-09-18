@@ -1,7 +1,6 @@
 //! Felhasználók kezelésére szolgáló szolgáló végpont.
 
 use std::sync::Arc;
-
 use axum::{
     extract::State,
     response::{IntoResponse, Json},
