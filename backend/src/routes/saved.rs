@@ -5,9 +5,10 @@ use axum::{
     response::{IntoResponse, Json},
 };
 use sqlx::{query, query_as, MySql, MySqlPool};
+use std::sync::Arc;
 
-async fn get_saved(
-    State(database): State<&MySqlPool>,
+pub async fn get(
+    State(database): State<Arc<MySqlPool>>,
     saved: Json<String>,
 ) -> impl IntoResponse {
     match query_as::<MySql, Joke>(
@@ -24,7 +25,7 @@ async fn get_saved(
         GROUP BY jokes.id, jokes.user_name, jokes.content;",
     )
     .bind(&*saved)
-    .fetch_all(database)
+    .fetch_all(&*database)
     .await
     {
         Ok(saved) => (StatusCode::OK, Json(saved)).into_response(),
@@ -33,14 +34,14 @@ async fn get_saved(
     }
 }
 
-async fn put_saved(
-    State(database): State<&MySqlPool>,
+pub async fn put(
+    State(database): State<Arc<MySqlPool>>,
     saved: Json<Saved>,
 ) -> impl IntoResponse {
     match query("INSERT INTO saved (user_name, joke_id) VALUES ('?', '?');")
         .bind(&saved.user_name)
         .bind(&saved.joke_id)
-        .execute(database)
+        .execute(&*database)
         .await
     {
         Ok(..) => StatusCode::OK.into_response(),
@@ -49,14 +50,14 @@ async fn put_saved(
     }
 }
 
-async fn delete_saved(
-    State(database): State<&MySqlPool>,
+pub async fn delete(
+    State(database): State<Arc<MySqlPool>>,
     saved: Json<Saved>,
 ) -> impl IntoResponse {
     match query("DELETE FROM saved WHERE user_name = '?' AND joke_id = ?;")
         .bind(&saved.user_name)
         .bind(&saved.joke_id)
-        .execute(database)
+        .execute(&*database)
         .await
     {
         Ok(..) => StatusCode::OK.into_response(),

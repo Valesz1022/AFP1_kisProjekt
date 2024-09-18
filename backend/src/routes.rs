@@ -2,17 +2,21 @@
 //! URL alapján. Egy-egy adott végponton belül az adott HTTP method nevével
 //! található függvény a tényleges kontroller.
 
+use axum::{routing, Router};
+use sqlx::MySqlPool;
 use std::sync::Arc;
 
-use axum::{routing, Router};
-
-use crate::AppState;
-
 pub mod health_check;
-pub mod users;
 pub mod saved;
+pub mod users;
 
-/// A végpontok csoportosítása, és egy útvonalvezetőbe tétele.
-pub fn router() -> Router<Arc<AppState>> {
-    Router::new().route("/health_check", routing::get(health_check::get))
+pub fn router() -> Router<Arc<MySqlPool>> {
+    Router::new()
+        .route("/health_check", routing::get(health_check::get))
+        .route(
+            "/saved",
+            routing::get(saved::get)
+                .put(saved::put)
+                .delete(saved::delete),
+        )
 }
