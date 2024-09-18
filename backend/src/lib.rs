@@ -11,6 +11,7 @@ use uuid::Uuid;
 
 pub mod configuration;
 pub(crate) mod routes;
+pub(crate) mod models;
 pub mod telemetry;
 
 /// A webszerver állapota, végpontokban elérhetővé téve referencia számlált
