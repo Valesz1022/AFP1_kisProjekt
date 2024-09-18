@@ -1,8 +1,8 @@
-use sqlx::{FromRow, MySqlConnection, MySqlPool};
+use sqlx::{FromRow, MySqlConnection};
 use serde::{Deserialize, Serialize};
 
 #[derive(FromRow, Deserialize, Serialize)]
-struct User {
+pub struct User {
     name: String,
     password: String,
     #[serde(skip_deserializing)]
