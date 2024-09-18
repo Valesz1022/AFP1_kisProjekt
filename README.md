@@ -36,6 +36,7 @@ A portálon megjelenő tartalmakat adminisztrátorok felügyelik.
 + Molnár Máté Norbert (GBWYKF)
 + Zana Domán (Z17V4D)
 + Gunics Roland (SWTR0U)
++ Pászti Szabolcs (LG9AN1)
 ---
 
 ## Senior
