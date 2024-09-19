@@ -27,7 +27,7 @@ pub async fn get(State(appstate): State<Arc<AppState>>) -> impl IntoResponse {
     }
 }
 
-pub async fn put(
+pub async fn post(
     State(appstate): State<Arc<AppState>>,
     Query(params): Query<HashMap<String, String>>,
 ) -> impl IntoResponse {

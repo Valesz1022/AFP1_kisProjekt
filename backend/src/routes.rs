@@ -6,6 +6,7 @@ pub mod health_check;
 pub mod jokes;
 pub mod saved;
 pub mod users;
+pub mod votes;
 
 pub fn router() -> Router<Arc<AppState>> {
     Router::new()
@@ -13,19 +14,25 @@ pub fn router() -> Router<Arc<AppState>> {
         .route(
             "/users",
             routing::get(users::get)
-                .put(users::put)
+                .post(users::post)
                 .delete(users::delete),
         )
         .route(
             "/jokes",
             routing::get(jokes::get)
-                .put(jokes::put)
+                .post(jokes::post)
                 .delete(jokes::delete),
+        )
+        .route(
+            "/votes",
+            routing::post(votes::post)
+                .put(votes::put)
+                .delete(votes::delete),
         )
         .route(
             "/saved",
             routing::get(saved::get)
-                .put(saved::put)
+                .post(saved::post)
                 .delete(saved::delete),
         )
 }
