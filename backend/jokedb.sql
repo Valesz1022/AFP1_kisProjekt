@@ -13,23 +13,23 @@ CREATE TABLE jokes (
     id INT PRIMARY KEY AUTO_INCREMENT,
     user_name VARCHAR(50) NOT NULL,
     content VARCHAR(500) NOT NULL UNIQUE,
-    FOREIGN KEY (user_name) REFERENCES users(name)
+    FOREIGN KEY (user_name) REFERENCES users(name) ON DELETE CASCADE
 );
 
 CREATE TABLE votes (
     user_name VARCHAR(50) NOT NULL,
     joke_id INT NOT NULL,
     vote INT NOT NULL DEFAULT 0,
-    FOREIGN KEY (user_name) REFERENCES users(name),
-    FOREIGN KEY (joke_id) REFERENCES jokes(id),
+    FOREIGN KEY (user_name) REFERENCES users(name) ON DELETE CASCADE,
+    FOREIGN KEY (joke_id) REFERENCES jokes(id) ON DELETE CASCADE,
     PRIMARY KEY (user_name, joke_id)
 );
 
 CREATE TABLE saved (
     user_name VARCHAR(50) NOT NULL,
     joke_id INT NOT NULL,
-    FOREIGN KEY (user_name) REFERENCES users(name),
-    FOREIGN KEY (joke_id) REFERENCES jokes(id),
+    FOREIGN KEY (user_name) REFERENCES users(name) ON DELETE CASCADE,
+    FOREIGN KEY (joke_id) REFERENCES jokes(id) ON DELETE CASCADE,
     PRIMARY KEY (user_name, joke_id)
 );
 
