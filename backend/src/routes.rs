@@ -13,12 +13,7 @@ pub mod votes;
 pub fn router() -> Router<Arc<AppState>> {
     Router::new()
         .route("/health_check", routing::get(health_check::get))
-        .route(
-            "/users",
-            routing::get(users::get)
-                .post(users::post)
-                .delete(users::delete),
-        )
+        .route("/users", routing::get(users::get).post(users::post))
         .route(
             "/jokes",
             routing::get(jokes::get)
