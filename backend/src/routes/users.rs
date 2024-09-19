@@ -47,18 +47,3 @@ pub async fn post(
         Err(error) => (StatusCode::CONFLICT, error.to_string()).into_response(),
     }
 }
-
-pub async fn delete(
-    State(appstate): State<Arc<AppState>>,
-    Query(params): Query<HashMap<String, String>>,
-) -> impl IntoResponse {
-    match query("DELETE FROM users WHERE name = ?;")
-        .bind(&Some(params.get("name")))
-        .execute(&appstate.connection_pool)
-        .await
-    {
-        Ok(..) => StatusCode::OK.into_response(),
-        Err(error) => (StatusCode::INTERNAL_SERVER_ERROR, error.to_string())
-            .into_response(),
-    }
-}
