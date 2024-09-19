@@ -3,6 +3,7 @@ use axum::{routing, Router};
 use std::sync::Arc;
 
 pub mod health_check;
+pub mod jokes;
 pub mod saved;
 pub mod users;
 
@@ -14,6 +15,12 @@ pub fn router() -> Router<Arc<AppState>> {
             routing::get(users::get)
                 .put(users::put)
                 .delete(users::delete),
+        )
+        .route(
+            "/jokes",
+            routing::get(jokes::get)
+                .put(jokes::put)
+                .delete(jokes::delete),
         )
         .route(
             "/saved",
