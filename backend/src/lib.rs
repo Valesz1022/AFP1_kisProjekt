@@ -10,8 +10,8 @@ use tracing::{debug, span, Level};
 use uuid::Uuid;
 
 pub mod configuration;
-pub(crate) mod routes;
 pub(crate) mod models;
+pub(crate) mod routes;
 pub mod telemetry;
 
 /// A webszerver állapota, végpontokban elérhetővé téve referencia számlált
@@ -67,7 +67,7 @@ impl Application {
 
         let app_state = Arc::new(AppState::new(connection_pool));
 
-        let app = routes::router()
+        let app = routes::guest_router()
             .layer(TraceLayer::new_for_http().make_span_with(
                 |request: &Request| {
                     let request_id = Uuid::new_v4().to_string();

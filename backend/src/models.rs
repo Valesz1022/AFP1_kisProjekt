@@ -5,8 +5,7 @@ use sqlx::FromRow;
 
 #[derive(Deserialize, Serialize, FromRow)]
 pub struct User {
-    pub name: String,
-    pub password: String,
+    pub admin: i32,
 }
 
 #[derive(Deserialize, Serialize, FromRow)]

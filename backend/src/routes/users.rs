@@ -4,7 +4,7 @@ use crate::{models::User, AppState};
 use axum::{
     extract::{Query, State},
     http::StatusCode,
-    response::IntoResponse,
+    response::{IntoResponse, Json},
 };
 use sqlx::{query, query_as, MySql};
 use std::{collections::HashMap, sync::Arc};
@@ -16,7 +16,7 @@ pub async fn get(
     Query(params): Query<HashMap<String, String>>,
 ) -> impl IntoResponse {
     match query_as::<MySql, User>(
-        "SELECT * FROM users
+        "SELECT admin FROM users
         WHERE name = ? AND password = ?;",
     )
     .bind(&Some(params.get("name")))
@@ -24,12 +24,13 @@ pub async fn get(
     .fetch_all(&appstate.connection_pool)
     .await
     {
-        Ok(users) => if users.len() == 0 {
-            StatusCode::UNAUTHORIZED
-        } else {
-            StatusCode::OK
+        Ok(users) => {
+            if users.len() == 0 {
+                StatusCode::UNAUTHORIZED.into_response()
+            } else {
+                (StatusCode::OK, Json(&users[0])).into_response()
+            }
         }
-        .into_response(),
         Err(error) => (StatusCode::INTERNAL_SERVER_ERROR, error.to_string())
             .into_response(),
     }
