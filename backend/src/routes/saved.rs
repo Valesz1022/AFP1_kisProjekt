@@ -8,7 +8,9 @@ use axum::{
 };
 use sqlx::{query, query_as, MySql};
 use std::{collections::HashMap, sync::Arc};
+use tracing::instrument;
 
+#[instrument(name = "saved::get", skip(appstate))]
 pub async fn get(
     State(appstate): State<Arc<AppState>>,
     Query(params): Query<HashMap<String, String>>,
@@ -36,6 +38,7 @@ pub async fn get(
     }
 }
 
+#[instrument(name = "saved::post", skip(appstate))]
 pub async fn post(
     State(appstate): State<Arc<AppState>>,
     Query(params): Query<HashMap<String, String>>,
@@ -51,6 +54,7 @@ pub async fn post(
     }
 }
 
+#[instrument(name = "saved::delete", skip(appstate))]
 pub async fn delete(
     State(appstate): State<Arc<AppState>>,
     Query(params): Query<HashMap<String, String>>,

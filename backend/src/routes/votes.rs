@@ -8,7 +8,9 @@ use axum::{
 };
 use sqlx::query;
 use std::{collections::HashMap, sync::Arc};
+use tracing::instrument;
 
+#[instrument(name = "votes::post", skip(appstate))]
 pub async fn post(
     State(appstate): State<Arc<AppState>>,
     Query(params): Query<HashMap<String, String>>,
@@ -27,6 +29,7 @@ pub async fn post(
     }
 }
 
+#[instrument(name = "votes::put", skip(appstate))]
 pub async fn put(
     State(appstate): State<Arc<AppState>>,
     Query(params): Query<HashMap<String, String>>,
@@ -46,6 +49,7 @@ pub async fn put(
     }
 }
 
+#[instrument(name = "votes::delete", skip(appstate))]
 pub async fn delete(
     State(appstate): State<Arc<AppState>>,
     Query(params): Query<HashMap<String, String>>,
