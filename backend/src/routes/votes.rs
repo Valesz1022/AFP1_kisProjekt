@@ -1,3 +1,5 @@
+//! Értékelések kezelését kiszolgáló végpont
+
 use crate::AppState;
 use axum::{
     extract::{Query, State},

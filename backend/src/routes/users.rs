@@ -1,3 +1,5 @@
+//! Felhasználók kezelését kiszolgáló végpont
+
 use crate::{models::User, AppState};
 use axum::{
     extract::{Query, State},

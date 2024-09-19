@@ -1,12 +1,9 @@
-//! API állapotának ellenőrzésére szolgáló végpont.
+//! API állapotát ellenőrző végpont
 
-use axum::Json;
-use serde_json::{json, Value};
+use axum::{http::StatusCode, response::IntoResponse};
 use tracing::instrument;
 
-#[instrument(name = "Health check")]
-pub async fn get() -> Json<Value> {
-    Json(json!({
-        "status": "active"
-    }))
+#[instrument(name = "health_check::get")]
+pub async fn get() -> impl IntoResponse {
+    (StatusCode::OK, "Hello, World!").into_response()
 }

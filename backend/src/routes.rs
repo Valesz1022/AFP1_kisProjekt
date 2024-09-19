@@ -1,3 +1,5 @@
+//! Útvonalak végpontokhoz rendelése
+
 use crate::AppState;
 use axum::{routing, Router};
 use std::sync::Arc;

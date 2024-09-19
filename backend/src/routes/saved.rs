@@ -1,3 +1,5 @@
+//! Mentett viccek kezelését kiszolgáló végpont
+
 use crate::{models::Joke, AppState};
 use axum::{
     extract::{Query, State},
