@@ -9,21 +9,21 @@ pub struct User {
 
 #[derive(Deserialize, Serialize, FromRow)]
 pub struct Joke {
-    pub id: u64,
+    pub id: i32,
     pub user_name: String,
     pub content: String,
-    pub votes: i64,
+    pub votes: i32,
 }
 
 #[derive(Deserialize, Serialize, FromRow)]
 pub struct Vote {
     pub user_name: String,
-    pub joke_id: u64,
-    pub vote: i8,
+    pub joke_id: i32,
+    pub vote: i32,
 }
 
 #[derive(Deserialize, Serialize, FromRow)]
 pub struct Saved {
     pub user_name: String,
-    pub joke_id: u64,
+    pub joke_id: i32,
 }
