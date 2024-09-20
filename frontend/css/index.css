@@ -4,15 +4,24 @@ body {
     font-family: Arial, sans-serif;
     background-color: #ffeb3b;
     color: black;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .container {
+    display:  flex;
+    flex-direction: column;
+    height: 100vh;;
 }
 
 .header {
     padding: 10px 20px;
     background-color: #f3cb23;
-    
+    display: flex;
+    justify-content: space-between;
+    justify-items: center;;
+    align-items: center;
 }
 
 h1 {
@@ -42,6 +51,8 @@ h1 {
 .body {
     margin-top: 50px;
     margin: auto 0 !important;
+    display: flex;
+    justify-content: center;
 }
 
 .form {
