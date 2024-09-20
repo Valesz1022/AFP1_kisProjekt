@@ -1,3 +1,93 @@
-#button {
-    font-size: 20px;
+
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #ffeb3b;
+    color: black;
+}
+
+.container {
+}
+
+.header {
+    padding: 10px 20px;
+    background-color: #f3cb23;
+    
+}
+
+h1 {
+    margin-left: 20px;
+    font-size: 36px;
+    font-weight: bold;
+}
+
+.nav-buttons {
+    margin-right: 20px;
+}
+
+.registration_button, .login_button {
+    background-color: #b0855a;
+    border: none;
+    padding: 10px 20px;
+    color: white;
+    cursor: pointer;
+    margin-left: 10px;
+    font-size: 16px;
+}
+
+.registration_button:hover, .login_button:hover {
+    background-color: #8e6e45;
+}
+
+.body {
+    margin-top: 50px;
+    margin: auto 0 !important;
+}
+
+.form {
+    background-color: #e53935;
+    padding: 40px;
+    border-radius: 8px;
+    width: 300px;
+}
+
+#login_title {
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+form {
+}
+
+label {
+    font-size: 18px;
+    margin-bottom: 10px;
+    text-align: left;
+}
+
+.username, .password{
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.username:focus, .password:focus{
+    border-color: #555;
+}
+
+.submit_button {
+    background-color: #b0855a;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.submit_button:hover {
+    background-color: #8e6e45;
 }
