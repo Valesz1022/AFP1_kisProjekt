@@ -68,7 +68,9 @@ h1 {
     margin-bottom: 20px;
 }
 
-form {
+form{
+    display: flex;
+    flex-direction: column;
 }
 
 label {
