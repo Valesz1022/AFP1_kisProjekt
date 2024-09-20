@@ -10,9 +10,27 @@
 </head>
 
 <body>
-    <h1>Hello, World!</h1>
-    <button id="button">Button</button>
-    <script src="../dist/renderer.js"></script>
+    <div class="container">
+        <div class="header" id="login_header">
+            <h1>Vicc-explorer</h1>
+            <div class="nav_buttons">
+                <button class="registration_button">Regisztráció</button>
+                <button class="login_button">Bejelentkezés</button>
+            </div>
+        </div>
+        <div class="body" id="login_body">
+            <div class="form" id="login_form">
+                <p id="login_title">Bejelentkezés</p>
+                <form action="" method="POST">
+                    <label for="username">felhasználónév</label>
+                    <input type="text"  class="username" id="login_username" name="username" placeholder="username">
+                    <label for="password">jelszó</label>
+                    <input type="password" class="password" id="login_password" name="password" placeholder="***********">
+                    <button type="submit" class="submit_button">Bejelentkezés</button>
+                </form>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>
