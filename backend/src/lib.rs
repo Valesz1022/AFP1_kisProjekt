@@ -1,8 +1,8 @@
 use std::{io, sync::Arc};
 
-use axum::{extract::Request, Router};
+use axum::extract::Request;
 use axum_login::{
-    login_required,
+    login_required, permission_required,
     tower_sessions::{ExpiredDeletion, Expiry, SessionManagerLayer},
     AuthManagerLayerBuilder,
 };
@@ -47,10 +47,13 @@ impl AppState {
 #[derive(Debug)]
 pub struct Application;
 
+#[non_exhaustive]
 #[derive(Debug, Error)]
 pub enum ServerError {
     #[error("Port is already in use.")]
-    Io(#[from] io::Error),
+    Port(io::Error),
+    #[error("Server shut down unexpectedly.")]
+    Shutdown(io::Error),
     #[error("Couldn't run database migrations to initialize sessions.")]
     Migrations(#[from] sqlx::Error),
     #[error("Couldn't run graceful shutdown task.")]
@@ -90,14 +93,12 @@ impl Application {
 
         let app_state = Arc::new(AppState::new(connection_pool));
 
-        let protected_routes = Router::new()
+        let app = routes::admin_router()
+            .route_layer(permission_required!(Backend, "admin"))
             .merge(routes::user_router())
-            .merge(routes::admin_router())
-            .route_layer(login_required!(Backend));
-
-        let app = Router::new()
-            .merge(protected_routes)
+            .route_layer(login_required!(Backend))
             .merge(routes::guest_router())
+            .layer(auth_layer)
             .layer(TraceLayer::new_for_http().make_span_with(
                 |request: &Request| {
                     let request_id = Uuid::new_v4().to_string();
@@ -112,7 +113,6 @@ impl Application {
                     }
                 },
             ))
-            .layer(auth_layer)
             .with_state(app_state);
 
         let listener = {
@@ -121,16 +121,22 @@ impl Application {
                 configuration.application.host, configuration.application.port,
             );
 
-            TcpListener::bind(address).await?
+            TcpListener::bind(address)
+                .await
+                .map_err(ServerError::Port)?
         };
 
-        debug!("listening on {}", listener.local_addr()?);
+        debug!(
+            "listening on {}",
+            listener.local_addr().map_err(ServerError::Port)?
+        );
 
         axum::serve(listener, app)
             .with_graceful_shutdown(Self::shutdown_signal(
                 deletion_task.abort_handle(),
             ))
-            .await?;
+            .await
+            .map_err(ServerError::Shutdown)?;
 
         deletion_task.await??;
 

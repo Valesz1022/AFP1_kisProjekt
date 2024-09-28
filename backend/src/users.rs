@@ -1,5 +1,8 @@
-use core::fmt::{self, Debug, Formatter};
-use std::{collections::HashSet, hash::Hash};
+use core::{
+    fmt::{self, Debug, Formatter},
+    hash::Hash,
+};
+use std::collections::HashSet;
 
 use axum::async_trait;
 use axum_login::{AuthUser, AuthnBackend, AuthzBackend, UserId};
@@ -7,11 +10,10 @@ use serde::{Deserialize, Serialize};
 use sqlx::{prelude::FromRow, MySqlPool};
 use thiserror::Error;
 use tokio::task;
-use tower_sessions::cookie::ParseError;
 
 #[derive(Clone, Serialize, FromRow)]
 pub struct User {
-    pub name: String,
+    name: String,
     password: String,
     admin: bool,
 }
@@ -106,18 +108,28 @@ pub struct Permission {
     pub name: String,
 }
 
+impl From<&str> for Permission {
+    fn from(value: &str) -> Self {
+        Self {
+            name: value.to_owned(),
+        }
+    }
+}
+
 #[async_trait]
 impl AuthzBackend for Backend {
     type Permission = Permission;
 
     async fn get_group_permissions(
         &self,
-        user: &Self::User
+        user: &Self::User,
     ) -> Result<HashSet<Self::Permission>, Self::Error> {
         // Ha szeretnénk több jogosultságot hozzáadni, így kicsit könnyebb lesz
         // később.
         if user.admin {
-            Ok(HashSet::from([Permission{name: "admin".to_owned()}]))
+            Ok(HashSet::from([Permission {
+                name: "admin".to_owned(),
+            }]))
         } else {
             Ok(HashSet::new())
         }
