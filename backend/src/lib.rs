@@ -13,6 +13,7 @@ pub mod configuration;
 pub(crate) mod models;
 pub(crate) mod routes;
 pub mod telemetry;
+pub(crate) mod users;
 
 /// A webszerver állapota, végpontokban elérhetővé téve referencia számlált
 /// módon.
