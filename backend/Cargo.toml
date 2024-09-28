@@ -32,7 +32,8 @@ serde-aux = "4.5.0"
 serde_json = "1.0.128"
 sqlx = { version = "0.8.2", features = ["runtime-tokio", "macros", "mysql"] }
 thiserror = "1.0.63"
-tokio = { version = "1.40.0", features = ["rt", "rt-multi-thread"] }
+time = "0.3.36"
+tokio = { version = "1.40.0", features = ["rt", "rt-multi-thread", "signal"] }
 tower-http = { version = "0.5.2", features = ["trace"] }
 tower-sessions = { version = "0.13.0", default-features = false, features = ["signed"] }
 tower-sessions-sqlx-store = { version = "0.14.1", features = ["mysql"] }
@@ -100,3 +101,4 @@ error_impl_error = "allow"
 std_instead_of_alloc = "allow"
 single_call_fn = "allow"
 indexing_slicing = "allow"
+shadow_unrelated = "allow"

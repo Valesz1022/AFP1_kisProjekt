@@ -1,12 +1,24 @@
 use std::{io, sync::Arc};
 
-use axum::{extract::Request, serve::Serve, Router};
+use axum::{extract::Request, Router};
+use axum_login::{
+    login_required,
+    tower_sessions::{ExpiredDeletion, Expiry, SessionManagerLayer},
+    AuthManagerLayerBuilder,
+};
 use configuration::Settings;
 use sqlx::{mysql::MySqlPoolOptions, MySqlPool};
-use thiserror::Error;
-use tokio::net::TcpListener;
+use time::Duration;
+use tokio::{
+    net::TcpListener,
+    select, signal,
+    task::{self, AbortHandle},
+};
 use tower_http::trace::TraceLayer;
+use tower_sessions::cookie::Key;
+use tower_sessions_sqlx_store::MySqlStore;
 use tracing::{debug, span, Level};
+use users::Backend;
 use uuid::Uuid;
 
 pub mod configuration;
@@ -29,51 +41,49 @@ impl AppState {
     }
 }
 
-/// Tartalmazza a webszervert, könnyebbé téve annak futtatását, és felépítését.
+/// A webszerver könnyebb felépítésére, futtatására szolgáló üres adatszerkezet.
 #[non_exhaustive]
 #[derive(Debug)]
-pub struct Application {
-    server: Serve<Router, Router>,
-}
-
-/// Az alkalmazás felépítése közben felmerülhető hibák.
-#[non_exhaustive]
-#[derive(Debug, Error)]
-pub enum BuildError {
-    /// A megadott host-ra és port-ra való csatlakozás közben felmerülő hiba.
-    /// Általában foglalt a port, ezért nem sikerült a csatlakozás.
-    #[error("Failed to bind to address.")]
-    BindAddress(#[from] io::Error),
-}
+pub struct Application;
 
 impl Application {
     /// Az alkalmazás felépítése, konfigurálása.
     /// Csatlakozik az adatbázishoz, illetve a port-hoz.
     /// Konfigurációs beállításokat felhasználja.
     #[inline]
-    pub async fn build(configuration: Settings) -> Result<Self, BuildError> {
+    pub async fn serve(configuration: Settings) -> Result<(), io::Error> {
         let connection_pool = MySqlPoolOptions::new()
             .connect_lazy_with(configuration.database.connect_options());
 
-        let listener = {
-            let address = format!(
-                "{}:{}",
-                configuration.application.host, configuration.application.port,
-            );
+        let session_store = MySqlStore::new(connection_pool.clone());
 
-            TcpListener::bind(address).await?
-        };
+        let deletion_task =
+            task::spawn(session_store.clone().continuously_delete_expired(
+                tokio::time::Duration::from_secs(60),
+            ));
 
-        debug!("listening on {}", listener.local_addr()?);
+        let key = Key::generate();
+
+        let session_layer = SessionManagerLayer::new(session_store)
+            .with_secure(false)
+            .with_expiry(Expiry::OnInactivity(Duration::days(1)))
+            .with_signed(key);
+
+        let backend = Backend::new(connection_pool.clone());
+        let auth_layer =
+            AuthManagerLayerBuilder::new(backend, session_layer).build();
 
         let app_state = Arc::new(AppState::new(connection_pool));
 
-        let routes = Router::new()
-            .nest("/", routes::guest_router())
-            .nest("/", routes::user_router())
-            .nest("/", routes::admin_router());
+        let protected_routes = Router::new()
+            .merge(routes::user_router())
+            .merge(routes::admin_router())
+            .route_layer(login_required!(Backend))
+            .layer(auth_layer);
 
-        let app = routes
+        let app = Router::new()
+            .merge(protected_routes)
+            .merge(routes::guest_router())
             .layer(TraceLayer::new_for_http().make_span_with(
                 |request: &Request| {
                     let request_id = Uuid::new_v4().to_string();
@@ -90,15 +100,45 @@ impl Application {
             ))
             .with_state(app_state);
 
-        Ok(Self {
-            server: axum::serve(listener, app),
-        })
+        let listener = {
+            let address = format!(
+                "{}:{}",
+                configuration.application.host, configuration.application.port,
+            );
+
+            TcpListener::bind(address).await?
+        };
+
+        debug!("listening on {}", listener.local_addr()?);
+
+        axum::serve(listener, app)
+            .with_graceful_shutdown(Self::shutdown_signal(
+                deletion_task.abort_handle(),
+            ))
+            .await
     }
 
-    /// Elindíta a szervert, és futtatja, amíg az egy javíthatatlan hibát nem
-    /// kap, ebben az esetben leáll.
-    #[inline]
-    pub async fn run_until_stopped(self) -> io::Result<()> {
-        self.server.await
+    async fn shutdown_signal(deletion_task_abort_handle: AbortHandle) {
+        let ctrl_c = async {
+            signal::ctrl_c()
+                .await
+                .expect("Failed to install Ctrl+C handler");
+        };
+
+        #[cfg(unix)]
+        let terminate = async {
+            signal::unix::signal(signal::unix::SignalKind::terminate())
+                .expect("Failed to install signal handler")
+                .recv()
+                .await;
+        };
+
+        #[cfg(not(unix))]
+        let terminate = std::future::pending::<()>();
+
+        select! {
+            _ = ctrl_c => { deletion_task_abort_handle.abort() },
+            _ = terminate => { deletion_task_abort_handle.abort() },
+        }
     }
 }

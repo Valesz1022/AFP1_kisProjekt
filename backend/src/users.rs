@@ -16,8 +16,9 @@ pub struct User {
 }
 
 impl Debug for User {
-    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
-        f.debug_struct("User")
+    fn fmt(&self, formatter: &mut Formatter<'_>) -> fmt::Result {
+        formatter
+            .debug_struct("User")
             .field("id", &self.id)
             .field("username", &self.username)
             .field("password", &"******")
@@ -42,7 +43,6 @@ impl AuthUser for User {
 pub struct Credentials {
     pub username: String,
     pub password: String,
-    pub next: Option<String>,
 }
 
 #[derive(Debug, Clone)]

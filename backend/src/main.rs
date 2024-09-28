@@ -6,7 +6,5 @@ async fn main() {
 
     let config = Settings::parse("base.toml").unwrap();
 
-    let app = Application::build(config).await.unwrap();
-
-    app.run_until_stopped().await.unwrap();
+    Application::serve(config).await.unwrap();
 }
