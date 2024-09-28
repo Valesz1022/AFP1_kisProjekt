@@ -43,9 +43,15 @@ pub async fn post(
     State(appstate): State<Arc<AppState>>,
     Query(params): Query<HashMap<String, String>>,
 ) -> impl IntoResponse {
+    let password_hash = if let Some(password) = params.get("password") {
+        password_auth::generate_hash(password)
+    } else {
+        return StatusCode::UNPROCESSABLE_ENTITY.into_response();
+    };
+
     match query("INSERT INTO users (name, password) VALUES (?, ?);")
         .bind(Some(params.get("name")))
-        .bind(Some(params.get("password")))
+        .bind(password_hash)
         .execute(&appstate.connection_pool)
         .await
     {

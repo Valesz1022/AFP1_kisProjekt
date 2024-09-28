@@ -9,18 +9,15 @@ use tokio::task;
 
 #[derive(Clone, Serialize, FromRow)]
 pub struct User {
-    id: i32,
-    pub username: String,
+    pub name: String,
     password: String,
     admin: bool,
 }
 
 impl Debug for User {
-    fn fmt(&self, formatter: &mut Formatter<'_>) -> fmt::Result {
-        formatter
-            .debug_struct("User")
-            .field("id", &self.id)
-            .field("username", &self.username)
+    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
+        f.debug_struct("User")
+            .field("name", &self.name)
             .field("password", &"******")
             .field("admin", &self.admin)
             .finish()
@@ -28,10 +25,10 @@ impl Debug for User {
 }
 
 impl AuthUser for User {
-    type Id = i32;
+    type Id = String;
 
     fn id(&self) -> Self::Id {
-        self.id
+        self.name.clone()
     }
 
     fn session_auth_hash(&self) -> &[u8] {
@@ -41,7 +38,7 @@ impl AuthUser for User {
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct Credentials {
-    pub username: String,
+    pub name: String,
     pub password: String,
 }
 
@@ -75,8 +72,8 @@ impl AuthnBackend for Backend {
         creds: Self::Credentials,
     ) -> Result<Option<Self::User>, Self::Error> {
         let user: Option<Self::User> =
-            sqlx::query_as("SELECT * FROM users WHERE username = ?")
-                .bind(creds.username)
+            sqlx::query_as("SELECT * FROM users WHERE name = ?")
+                .bind(creds.name)
                 .fetch_optional(&self.db)
                 .await?;
 
@@ -93,7 +90,7 @@ impl AuthnBackend for Backend {
         &self,
         user_id: &UserId<Self>,
     ) -> Result<Option<Self::User>, Self::Error> {
-        let user = sqlx::query_as("SELECT * FROM users WHERE id = ?")
+        let user = sqlx::query_as("SELECT * FROM users WHERE name = ?")
             .bind(user_id)
             .fetch_optional(&self.db)
             .await?;

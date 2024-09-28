@@ -8,6 +8,8 @@ use crate::AppState;
 
 pub mod health_check;
 pub mod jokes;
+pub mod login;
+pub mod logout;
 pub mod saved;
 pub mod users;
 pub mod votes;
@@ -17,6 +19,8 @@ pub fn guest_router() -> Router<Arc<AppState>> {
         .route("/health_check", routing::get(health_check::get))
         .route("/users", routing::post(users::post))
         .route("/jokes", routing::get(jokes::get))
+        .route("/login", routing::post(login::post))
+        .route("/logout", routing::get(logout::get))
 }
 
 pub fn user_router() -> Router<Arc<AppState>> {

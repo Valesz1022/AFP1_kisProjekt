@@ -8,14 +8,15 @@ use axum_login::{
 };
 use configuration::Settings;
 use sqlx::{mysql::MySqlPoolOptions, MySqlPool};
+use thiserror::Error;
 use time::Duration;
 use tokio::{
     net::TcpListener,
     select, signal,
-    task::{self, AbortHandle},
+    task::{self, AbortHandle, JoinError},
 };
 use tower_http::trace::TraceLayer;
-use tower_sessions::cookie::Key;
+use tower_sessions::{cookie::Key, session_store};
 use tower_sessions_sqlx_store::MySqlStore;
 use tracing::{debug, span, Level};
 use users::Backend;
@@ -46,16 +47,30 @@ impl AppState {
 #[derive(Debug)]
 pub struct Application;
 
+#[derive(Debug, Error)]
+pub enum ServerError {
+    #[error("Port is already in use.")]
+    Io(#[from] io::Error),
+    #[error("Couldn't run database migrations to initialize sessions.")]
+    Migrations(#[from] sqlx::Error),
+    #[error("Couldn't run graceful shutdown task.")]
+    Join(#[from] JoinError),
+    #[error("Couldn't run cleaning up in the database.")]
+    Session(#[from] session_store::Error),
+}
+
 impl Application {
     /// Az alkalmazás felépítése, konfigurálása.
     /// Csatlakozik az adatbázishoz, illetve a port-hoz.
     /// Konfigurációs beállításokat felhasználja.
     #[inline]
-    pub async fn serve(configuration: Settings) -> Result<(), io::Error> {
+    pub async fn serve(configuration: Settings) -> Result<(), ServerError> {
         let connection_pool = MySqlPoolOptions::new()
             .connect_lazy_with(configuration.database.connect_options());
 
         let session_store = MySqlStore::new(connection_pool.clone());
+
+        session_store.migrate().await?;
 
         let deletion_task =
             task::spawn(session_store.clone().continuously_delete_expired(
@@ -78,8 +93,7 @@ impl Application {
         let protected_routes = Router::new()
             .merge(routes::user_router())
             .merge(routes::admin_router())
-            .route_layer(login_required!(Backend))
-            .layer(auth_layer);
+            .route_layer(login_required!(Backend));
 
         let app = Router::new()
             .merge(protected_routes)
@@ -98,6 +112,7 @@ impl Application {
                     }
                 },
             ))
+            .layer(auth_layer)
             .with_state(app_state);
 
         let listener = {
@@ -115,7 +130,11 @@ impl Application {
             .with_graceful_shutdown(Self::shutdown_signal(
                 deletion_task.abort_handle(),
             ))
-            .await
+            .await?;
+
+        deletion_task.await??;
+
+        Ok(())
     }
 
     async fn shutdown_signal(deletion_task_abort_handle: AbortHandle) {
