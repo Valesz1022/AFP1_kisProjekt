@@ -1,14 +1,16 @@
 //! Értékelések kezelését kiszolgáló végpont
 
-use crate::AppState;
+use std::{collections::HashMap, sync::Arc};
+
 use axum::{
     extract::{Query, State},
     http::StatusCode,
     response::IntoResponse,
 };
 use sqlx::query;
-use std::{collections::HashMap, sync::Arc};
 use tracing::instrument;
+
+use crate::AppState;
 
 #[instrument(name = "votes::post", skip(appstate))]
 pub async fn post(

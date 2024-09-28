@@ -67,7 +67,12 @@ impl Application {
 
         let app_state = Arc::new(AppState::new(connection_pool));
 
-        let app = routes::guest_router()
+        let routes = Router::new()
+            .nest("/", routes::guest_router())
+            .nest("/", routes::user_router())
+            .nest("/", routes::admin_router());
+
+        let app = routes
             .layer(TraceLayer::new_for_http().make_span_with(
                 |request: &Request| {
                     let request_id = Uuid::new_v4().to_string();

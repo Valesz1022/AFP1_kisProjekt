@@ -1,14 +1,16 @@
 //! Felhasználók kezelését kiszolgáló végpont
 
-use crate::{models::User, AppState};
+use std::{collections::HashMap, sync::Arc};
+
 use axum::{
     extract::{Query, State},
     http::StatusCode,
     response::{IntoResponse, Json},
 };
 use sqlx::{query, query_as, MySql};
-use std::{collections::HashMap, sync::Arc};
 use tracing::instrument;
+
+use crate::{models::User, AppState};
 
 #[instrument(name = "users::get", skip(appstate))]
 pub async fn get(

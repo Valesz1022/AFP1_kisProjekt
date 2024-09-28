@@ -1,14 +1,16 @@
 //! Mentett viccek kezelését kiszolgáló végpont
 
-use crate::{models::Joke, AppState};
+use std::{collections::HashMap, sync::Arc};
+
 use axum::{
     extract::{Query, State},
     http::StatusCode,
     response::{IntoResponse, Json},
 };
 use sqlx::{query, query_as, MySql};
-use std::{collections::HashMap, sync::Arc};
 use tracing::instrument;
+
+use crate::{models::Joke, AppState};
 
 #[instrument(name = "saved::get", skip(appstate))]
 pub async fn get(
