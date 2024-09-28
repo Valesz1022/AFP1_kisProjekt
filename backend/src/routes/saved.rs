@@ -30,7 +30,7 @@ pub async fn get(
         WHERE users.name = ?
         GROUP BY jokes.id, jokes.user_name, jokes.content;",
     )
-    .bind(&Some(params.get("user_name")))
+    .bind(Some(params.get("user_name")))
     .fetch_all(&appstate.connection_pool)
     .await
     {
@@ -46,8 +46,8 @@ pub async fn post(
     Query(params): Query<HashMap<String, String>>,
 ) -> impl IntoResponse {
     match query("INSERT INTO saved (user_name, joke_id) VALUES (?, ?);")
-        .bind(&Some(params.get("user_name")))
-        .bind(&Some(params.get("joke_id")))
+        .bind(Some(params.get("user_name")))
+        .bind(Some(params.get("joke_id")))
         .execute(&appstate.connection_pool)
         .await
     {
@@ -62,8 +62,8 @@ pub async fn delete(
     Query(params): Query<HashMap<String, String>>,
 ) -> impl IntoResponse {
     match query("DELETE FROM saved WHERE user_name = ? AND joke_id = ?;")
-        .bind(&Some(params.get("user_name")))
-        .bind(&Some(params.get("joke_id")))
+        .bind(Some(params.get("user_name")))
+        .bind(Some(params.get("joke_id")))
         .execute(&appstate.connection_pool)
         .await
     {

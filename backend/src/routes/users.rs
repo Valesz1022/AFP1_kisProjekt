@@ -21,13 +21,13 @@ pub async fn get(
         "SELECT admin FROM users
         WHERE name = ? AND password = ?;",
     )
-    .bind(&Some(params.get("name")))
-    .bind(&Some(params.get("password")))
+    .bind(Some(params.get("name")))
+    .bind(Some(params.get("password")))
     .fetch_all(&appstate.connection_pool)
     .await
     {
         Ok(users) => {
-            if users.len() == 0 {
+            if users.is_empty() {
                 StatusCode::UNAUTHORIZED.into_response()
             } else {
                 (StatusCode::OK, Json(&users[0])).into_response()
@@ -44,8 +44,8 @@ pub async fn post(
     Query(params): Query<HashMap<String, String>>,
 ) -> impl IntoResponse {
     match query("INSERT INTO users (name, password) VALUES (?, ?);")
-        .bind(&Some(params.get("name")))
-        .bind(&Some(params.get("password")))
+        .bind(Some(params.get("name")))
+        .bind(Some(params.get("password")))
         .execute(&appstate.connection_pool)
         .await
     {
