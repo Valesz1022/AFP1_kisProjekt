@@ -5,7 +5,7 @@ DROP TABLE IF EXISTS users;
 
 CREATE TABLE users (
     name VARCHAR(50) PRIMARY KEY,
-    password VARCHAR(50) NOT NULL,
+    password VARCHAR(100) NOT NULL,
     admin BOOL NOT NULL DEFAULT FALSE
 );
 

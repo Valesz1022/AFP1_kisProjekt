@@ -1,14 +1,16 @@
 //! Felhasználók kezelését kiszolgáló végpont
 
-use crate::{models::User, AppState};
+use std::{collections::HashMap, sync::Arc};
+
 use axum::{
     extract::{Query, State},
     http::StatusCode,
     response::{IntoResponse, Json},
 };
 use sqlx::{query, query_as, MySql};
-use std::{collections::HashMap, sync::Arc};
 use tracing::instrument;
+
+use crate::{models::User, AppState};
 
 #[instrument(name = "users::get", skip(appstate))]
 pub async fn get(
@@ -19,13 +21,13 @@ pub async fn get(
         "SELECT admin FROM users
         WHERE name = ? AND password = ?;",
     )
-    .bind(&Some(params.get("name")))
-    .bind(&Some(params.get("password")))
+    .bind(Some(params.get("name")))
+    .bind(Some(params.get("password")))
     .fetch_all(&appstate.connection_pool)
     .await
     {
         Ok(users) => {
-            if users.len() == 0 {
+            if users.is_empty() {
                 StatusCode::UNAUTHORIZED.into_response()
             } else {
                 (StatusCode::OK, Json(&users[0])).into_response()
@@ -41,9 +43,15 @@ pub async fn post(
     State(appstate): State<Arc<AppState>>,
     Query(params): Query<HashMap<String, String>>,
 ) -> impl IntoResponse {
+    let password_hash = if let Some(password) = params.get("password") {
+        password_auth::generate_hash(password)
+    } else {
+        return StatusCode::UNPROCESSABLE_ENTITY.into_response();
+    };
+
     match query("INSERT INTO users (name, password) VALUES (?, ?);")
-        .bind(&Some(params.get("name")))
-        .bind(&Some(params.get("password")))
+        .bind(Some(params.get("name")))
+        .bind(password_hash)
         .execute(&appstate.connection_pool)
         .await
     {

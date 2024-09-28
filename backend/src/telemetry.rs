@@ -1,5 +1,5 @@
 //! Modul az alapvető naplózási megoldásokhoz.
-//! Tracing, tracing_subscriber crate-ket használva egyszerűvé teszi a
+//! Tracing, `tracing_subscriber` crate-ket használva egyszerűvé teszi a
 //! végpontokban való naplózást.
 
 use tracing_subscriber::{
@@ -15,9 +15,10 @@ use tracing_subscriber::{
 ///
 /// Alapvetően környezeti változóból keresi a naplózáshoz szükséges beállításokat,
 /// de ha ez nem található meg, akkor a következő beállításokat alkalmazza:
-/// jelenlegi crate: debug, tower_http: debug, axum::rejection: trace. Így
+/// jelenlegi crate: debug, `tower_http`: debug, `axum::rejection`: trace. Így
 /// csak az ezek, vagy ezeken felüli naplózási események kerülnek megjelenítésre
 /// az stdout-on.
+#[inline]
 pub fn init() {
     tracing_subscriber::registry()
         .with(EnvFilter::try_from_default_env().unwrap_or_else(|_| {
