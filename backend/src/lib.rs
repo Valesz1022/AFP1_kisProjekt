@@ -71,8 +71,12 @@ impl Application {
         let connection_pool = MySqlPoolOptions::new()
             .connect_lazy_with(configuration.database.connect_options());
 
+        // A bejelentkezett felhasználókat ugyanabba az adatbázisba mentjük
+        // el, mint ahova a többi adatot.
         let session_store = MySqlStore::new(connection_pool.clone());
 
+        // Létrehozza az `axum-login` számára szükséges táblákat az
+        // adatbázisban.
         session_store.migrate().await?;
 
         let deletion_task =
@@ -94,8 +98,10 @@ impl Application {
         let app_state = Arc::new(AppState::new(connection_pool));
 
         let app = routes::admin_router()
-            .route_layer(permission_required!(Backend, "admin"))
+            // csak admin jogosultsággal elérhető végpontok
+            .route_layer(permission_required!(Backend, "admin")) 
             .merge(routes::user_router())
+            // csak bejelentkezett felhasználók számára elérhető végpontok
             .route_layer(login_required!(Backend))
             .merge(routes::guest_router())
             .layer(auth_layer)
@@ -131,6 +137,8 @@ impl Application {
             listener.local_addr().map_err(ServerError::Port)?
         );
 
+        // Amikor leáll a szerver, megvárja, hogy a jelenleg bejelentkezett
+        // felhasználók törlésre kerüljenek.
         axum::serve(listener, app)
             .with_graceful_shutdown(Self::shutdown_signal(
                 deletion_task.abort_handle(),
@@ -143,6 +151,14 @@ impl Application {
         Ok(())
     }
 
+    /// A megkapott szál-leállító értéket meghívja, ha olyan jelet kap, amely
+    /// leállítja a program futását. Ezzel ha le is áll a program, az adatbázis
+    /// helyes állapotban lesz, sikeres tisztítások után.
+    ///
+    /// # Panics
+    /// Ha olyan operációs rendszeren fut a szerver, ahol a jeleket nem sikerül
+    /// kezelni, leáll a szerver azok kezelése nélkül, így az adatbázis 
+    /// helytelen állapotban lesz.
     async fn shutdown_signal(deletion_task_abort_handle: AbortHandle) {
         let ctrl_c = async {
             signal::ctrl_c()
