@@ -78,7 +78,7 @@ impl Application {
     /// Konfigurációs beállításokat felhasználja.
     /// Csatlakozik az adatbázishoz, illetve a port-hoz.
     /// Kezeli a hitelesítést, inicializálja az ahhoz szükséges dolgokat.
-    /// Futtatja a webszervert, illetve annak megállása után törli az 
+    /// Futtatja a webszervert, illetve annak megállása után törli az
     /// adabázisból a fölösleges dolgokat (pl. bejelentkezett felhasználók).
     #[inline]
     pub async fn serve(configuration: Settings) -> Result<(), ServerError> {
@@ -113,7 +113,7 @@ impl Application {
 
         let app = routes::admin_router()
             // csak admin jogosultsággal elérhető végpontok
-            .route_layer(permission_required!(Backend, "admin")) 
+            .route_layer(permission_required!(Backend, "admin"))
             .merge(routes::user_router())
             // csak bejelentkezett felhasználók számára elérhető végpontok
             .route_layer(login_required!(Backend))
@@ -171,7 +171,7 @@ impl Application {
     ///
     /// # Panics
     /// Ha olyan operációs rendszeren fut a szerver, ahol a jeleket nem sikerül
-    /// kezelni, leáll a szerver azok kezelése nélkül, így az adatbázis 
+    /// kezelni, leáll a szerver azok kezelése nélkül, így az adatbázis
     /// helytelen állapotban lesz.
     async fn shutdown_signal(deletion_task_abort_handle: AbortHandle) {
         let ctrl_c = async {

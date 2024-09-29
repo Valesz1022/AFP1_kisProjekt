@@ -1,4 +1,4 @@
-//! Útvonalak végpontokhoz rendelése
+//! Útvonalak végpontokhoz rendelése.
 
 use std::sync::Arc;
 
@@ -14,6 +14,7 @@ pub mod saved;
 pub mod users;
 pub mod votes;
 
+/// A vendég felhasználók számára elérhető végpontok.
 pub fn guest_router() -> Router<Arc<AppState>> {
     Router::new()
         .route("/health_check", routing::get(health_check::get))
@@ -23,6 +24,7 @@ pub fn guest_router() -> Router<Arc<AppState>> {
         .route("/logout", routing::get(logout::get))
 }
 
+/// A bejelentkezett felhasználók számára elérhető végpontok.
 pub fn user_router() -> Router<Arc<AppState>> {
     Router::new()
         .route("/jokes", routing::post(jokes::post))
@@ -40,6 +42,7 @@ pub fn user_router() -> Router<Arc<AppState>> {
         )
 }
 
+/// Az adminisztrátorok számára elérhető végpontok.
 pub fn admin_router() -> Router<Arc<AppState>> {
     Router::new().route("/jokes", routing::delete(jokes::delete))
 }

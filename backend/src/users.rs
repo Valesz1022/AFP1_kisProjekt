@@ -1,6 +1,6 @@
 //! Modul a felhasználók, hitelesítés és jogosultságok kezelésére.
 //!
-//! `axum-login` crate-t felhasználva a backend adatbázisán menti el a 
+//! `axum-login` crate-t felhasználva a backend adatbázisán menti el a
 //! jelenleg bejelentkezett felhasználókat, illetve a hozzájuk tartozó sütiket.
 
 use core::{
@@ -86,7 +86,7 @@ pub enum AuthError {
 /// A hitelesítő trait implementálása az `axum-login` elvárásai szerint.
 ///
 /// Hitelesítés, és ellenőrzésen kívül minden mást a könyvtár végez. Ha sikeres
-/// a hitelesítés, elmenti az adatbázisba a felhasználót jelenleg 
+/// a hitelesítés, elmenti az adatbázisba a felhasználót jelenleg
 /// bejelentkezettként.
 #[async_trait]
 impl AuthnBackend for Backend {
@@ -95,7 +95,7 @@ impl AuthnBackend for Backend {
     type User = User;
 
     /// Hitelesít egy felhasználót, ellenőrzi, hogy létezik-e ez a felhasználó,
-    /// illetve a jelszava megegyezik-e az elmentettel. Ehhez argon2 
+    /// illetve a jelszava megegyezik-e az elmentettel. Ehhez argon2
     /// titkosítási módszert használunk, a megkapott, illetve elmentett jelszó
     /// titkosítótt változatát hasonlítja össze.
     async fn authenticate(
@@ -154,7 +154,7 @@ impl From<&str> for Permission {
 /// A jogosultságokat kezelő trait implementálása az `axum-login` elvárásai
 /// szerint.
 ///
-/// Attól függően, hogy milyen jogosultsága van egy adott felhasználónak, a 
+/// Attól függően, hogy milyen jogosultsága van egy adott felhasználónak, a
 /// különböző végpontokat jogosultságok mögé tehetjük, és nem érheti el azokat
 /// addig, amíg nem jelentkezik be egy olyan felhasználóval, akinek már van
 /// jogosultsága hozzá.

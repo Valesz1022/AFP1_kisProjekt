@@ -1,8 +1,12 @@
+//! A bejelentkezésre szolgáló végpont.
+
 use axum::{extract::Query, http::StatusCode, response::IntoResponse};
 use axum_login::AuthSession;
+use tracing::instrument;
 
 use crate::users::{Backend, Credentials};
 
+#[instrument("login::post", skip(auth_session))]
 pub async fn post(
     mut auth_session: AuthSession<Backend>,
     Query(creds): Query<Credentials>,
