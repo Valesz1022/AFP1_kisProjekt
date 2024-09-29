@@ -1,4 +1,4 @@
-//! A bejelentkezésre szolgáló végpont.
+//! Felhasználók bejelentkezését kiszolgáló végpont
 
 use axum::{extract::Query, http::StatusCode, response::IntoResponse};
 use axum_login::AuthSession;

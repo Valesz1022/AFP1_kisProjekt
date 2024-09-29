@@ -1,4 +1,4 @@
-//! Felhasználók kezelését kiszolgáló végpont
+//! Felhasználók regisztrálását kiszolgáló végpont
 
 use std::{collections::HashMap, sync::Arc};
 
@@ -12,7 +12,7 @@ use tracing::instrument;
 
 use crate::AppState;
 
-#[instrument(name = "users::post", skip(appstate))]
+#[instrument(name = "register::post", skip(appstate))]
 pub async fn post(
     State(appstate): State<Arc<AppState>>,
     Query(params): Query<HashMap<String, String>>,
