@@ -1,3 +1,5 @@
+//! Webszerver a `vicc_explorer` backendjének.
+
 use std::{io, sync::Arc};
 
 use axum::extract::Request;
@@ -47,25 +49,37 @@ impl AppState {
 #[derive(Debug)]
 pub struct Application;
 
+/// A webszerver indítása és futtatása közben felmerülhető problémák.
 #[non_exhaustive]
 #[derive(Debug, Error)]
 pub enum ServerError {
+    /// A szerver nem tudott elindulni, mivel a konfigurációban megadott port
+    /// már foglalt.
     #[error("Port is already in use.")]
     Port(io::Error),
+    /// A szerver hibásan állt le.
     #[error("Server shut down unexpectedly.")]
     Shutdown(io::Error),
+    /// Nem lehetett a hitelesítéshez szükséges adatbázis táblákat létrehozni.
     #[error("Couldn't run database migrations to initialize sessions.")]
     Migrations(#[from] sqlx::Error),
+    /// Nem sikerült lefuttatni az adatbázis helyreállításához szükséges
+    /// szálat.
     #[error("Couldn't run graceful shutdown task.")]
     Join(#[from] JoinError),
+    /// Nem sikerült az adatbázist helyreállítani.
     #[error("Couldn't run cleaning up in the database.")]
     Session(#[from] session_store::Error),
 }
 
 impl Application {
-    /// Az alkalmazás felépítése, konfigurálása.
-    /// Csatlakozik az adatbázishoz, illetve a port-hoz.
+    /// Az alkalmazás felépítése, konfigurálása és futtatása.
+    ///
     /// Konfigurációs beállításokat felhasználja.
+    /// Csatlakozik az adatbázishoz, illetve a port-hoz.
+    /// Kezeli a hitelesítést, inicializálja az ahhoz szükséges dolgokat.
+    /// Futtatja a webszervert, illetve annak megállása után törli az 
+    /// adabázisból a fölösleges dolgokat (pl. bejelentkezett felhasználók).
     #[inline]
     pub async fn serve(configuration: Settings) -> Result<(), ServerError> {
         let connection_pool = MySqlPoolOptions::new()
