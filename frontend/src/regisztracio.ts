@@ -1,7 +1,7 @@
 let hibak: Array<string> = [];
 function validateForm() : boolean {
     const usernameInput = document.getElementById("username") as HTMLInputElement;
-    const passwordInput = document.getElementById("username") as HTMLInputElement;
+    const passwordInput = document.getElementById("password") as HTMLInputElement;
 
     const username = usernameInput.value;
     const password = passwordInput.value;
@@ -13,7 +13,7 @@ function validateForm() : boolean {
         hibak.push("A felhasználónév nem lehet üres!")
     }
     if (password == null || password == ""){
-        hibak.push("A felhasználónév nem lehet üres!")
+        hibak.push("A jelszó nem lehet üres!")
     }
     if(specialCharPattern.test(username)){
         hibak.push("A felhasználónév nem tartalmazhat speciális karaktert!")

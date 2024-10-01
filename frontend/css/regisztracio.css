@@ -11,6 +11,7 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
+    padding: 10px;
 }
 
 .container {
@@ -18,11 +19,12 @@ body {
 }
 
 header {
-    position: absolute;
+    position: fixed;
     top: 10px;
     width: 100%;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start; 
+    align-items: center;
     padding: 10px;
     background-color: yellow;
 }
@@ -33,7 +35,8 @@ h1 {
 }
 
 nav {
-    margin-right: 20px;
+    margin-right: 10px;
+    margin-left: 250px;
 }
 
 nav button {

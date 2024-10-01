@@ -23,11 +23,14 @@
                 <input type="text" id="username" name="username" placeholder="username">
                 
                 <label for="password">jelszó</label>
-                <input type="password" id="password" name="password" placeholder="********">
+                <input type="password" id="password" name="password" placeholder="********" maxlength="20">
                 
                 <button type="submit">Regisztráció</button>
             </form>
+          <div id="error-messages" style="color: blue;"></div>
         </section>
     </div>
+
+    <script src="../dist/regisztracio.js"></script>
 </body>
 </html>
