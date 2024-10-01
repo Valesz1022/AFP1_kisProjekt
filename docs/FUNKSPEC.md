@@ -23,7 +23,7 @@ Célunk, hogy tiszta kódot kapjunk, hogy a későbbiekben csatlakozó webfejles
 munkatársak bármikor könnyedén tudjanak csatlakozni a fejlesztéshez.\
 Fontos lenne, ha a portálon megkülönböztetnénk a felhasználókat és adminisztrátorokat, 
 hisz nem szeretnénk, hogy bármilyen rossz indulatú felhasználó be tudjon nyúlni 
-a portálba, akár törölni tartalmat.\ 
+a portálba, akár törölni tartalmat.\
 Erre tökéletes megoldás a rangok besorolása, számunkra 3 főbb rangra lenne szükség:
 Admin, Felhasználó és Látogató, természetesen nem lenne baj, ha ezt később tudnánk
 bővíteni, akár egy Moderátor státusszal.\
