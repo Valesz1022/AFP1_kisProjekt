@@ -18,10 +18,14 @@ const api = {
     }
 }
 
+const SERVER = 'http://afp.sentinelpi.hu:3000'
+
 declare global {
     interface Window {
         api: typeof api
     }
+    let SERVER: String
 }
 
 contextBridge.exposeInMainWorld('api', api)
+contextBridge.exposeInMainWorld('SERVER', SERVER)
