@@ -21,7 +21,7 @@ window.addEventListener('load', () => {
         window.api.load_reg_page()
     })
 
-    login_elements.login_button.addEventListener('click', () =>
+    login_elements.login_button.addEventListener('click', (e) =>
     {
         sendLoginInfo(login_elements.login_username.value, login_elements.login_password.value);
     })
@@ -32,20 +32,19 @@ async function sendLoginInfo(username: string, password: string) {
         method: "POST"
     });
 
-    let user = await response.json();
-
-    user.admin
+    //let user = await response.json();
 
     switch(response.status){
         case 200:
-            if(user.admin){
+            window.api.load_main_page_admin();
+            /*if(user.admin){
                 window.api.load_main_page_admin();
             }
             else{
                 window.api.load_main_page_user();
-            }
+            }*/
         case 401:
-            console.log("Bejellentkezés megtagadva");
+            console.log("Bejelentkezés megtagadva");
         case 500:
             console.log("Hiba történt");
     }
