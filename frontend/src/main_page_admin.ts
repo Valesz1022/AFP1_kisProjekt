@@ -36,7 +36,7 @@ window.addEventListener('load', () => {
 
 async function get_jokes() {
     console.log("viccek lekérése");
-    let response = await fetch(`${SERVER}`, {
+    let response = await fetch(`${SERVER}/jokes`, {
         method: "GET"
     });
 
@@ -46,7 +46,9 @@ async function get_jokes() {
     switch(response.status){
         case 200:
             console.log("sikeres lekérés");
-            jokes.json.forEach((joke: Types.Joke) => {
+            jokes.forEach((joke: Types.Joke) => {
+                console.log(joke);
+
                 //a divek létrehozása és appendelése a main_page_user.html alapján
                 let post = document.createElement('div');
                 post.classList.add('post');
@@ -130,13 +132,15 @@ async function get_jokes() {
         
                 main_page_admin_elements.posts_container.appendChild(post);
             });
+            break;
         case 500:
             console.log("Hiba történt");
+            break;
     }
 }
 
 async function logout() {
-    let response = await fetch(`${SERVER}`, {
+    let response = await fetch(`${SERVER}/logout`, {
         method: "GET"
     });
 
@@ -149,7 +153,7 @@ async function logout() {
 }
 
 async function delete_joke(id: string) {
-    let response = await fetch(`${SERVER}`, {
+    let response = await fetch(`${SERVER}/jokes?id=${id}`, {
         method: "DELETE"
     });
 
