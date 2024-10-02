@@ -31,3 +31,15 @@ ipcMain.on('load_login_page', () => {
         window.loadFile(path.join(app.getAppPath(), 'html/index.html'));
     }
 });
+
+ipcMain.on('load_main_page_admin', () => {
+    if(window){
+        window.loadFile(path.join(app.getAppPath(), 'html/main_page_admin.html'));
+    }
+})
+
+ipcMain.on('load_main_page_user', () => {
+    if(window){
+        window.loadFile(path.join(app.getAppPath(), 'html/main_page_user.html'));
+    }
+})
