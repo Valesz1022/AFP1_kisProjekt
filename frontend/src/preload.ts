@@ -7,13 +7,25 @@ const api = {
 
     load_login_page: () => {
         ipcRenderer.send('load_login_page')
+    },
+
+    load_main_page_admin: () => {
+        ipcRenderer.send('load_main_page_admin')
+    },
+
+    load_main_page_user: () => {
+        ipcRenderer.send('load_main_page_user')
     }
 }
+
+const SERVER = 'http://afp.sentinelpi.hu:3000'
 
 declare global {
     interface Window {
         api: typeof api
     }
+    let SERVER: String
 }
 
 contextBridge.exposeInMainWorld('api', api)
+contextBridge.exposeInMainWorld('SERVER', SERVER)

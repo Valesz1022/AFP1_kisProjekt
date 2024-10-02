@@ -7,7 +7,6 @@
     <title>Vicc Explorer</title>
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
     <link rel="stylesheet" href="../css/index.css">
-    <script src="../dist/renderer.js"></script>
     <script src="../dist/login.js"></script>
 </head>
 
@@ -25,9 +24,9 @@
                 <p id="login_title">Bejelentkezés</p>
                 <form action="" method="POST">
                     <label for="username">felhasználónév</label>
-                    <input type="text"  class="username" id="login_username" name="username" placeholder="username">
+                    <input type="text"  class="username" id="login_username" name="username" placeholder="username" required>
                     <label for="password">jelszó</label>
-                    <input type="password" class="password" id="login_password" name="password" placeholder="***********">
+                    <input type="password" class="password" id="login_password" name="password" placeholder="***********" required>
                     <button type="submit" id="login_button" class="submit_button">Bejelentkezés</button>
                 </form>
             </div>
