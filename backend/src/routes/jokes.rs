@@ -38,14 +38,26 @@ pub async fn post(
     State(appstate): State<Arc<AppState>>,
     Query(params): Query<HashMap<String, String>>,
 ) -> impl IntoResponse {
+    let Some(user_name) = params.get("name") else {
+        return StatusCode::UNPROCESSABLE_ENTITY.into_response();
+    };
+    let Some(content) = params.get("content") else {
+        return StatusCode::UNPROCESSABLE_ENTITY.into_response();
+    };
+    
     match query("INSERT INTO jokes (user_name, content) VALUES (?, ?);")
-        .bind(Some(params.get("user_name")))
-        .bind(Some(params.get("content")))
+        .bind(user_name)
+        .bind(content)
         .execute(&appstate.connection_pool)
         .await
     {
         Ok(..) => StatusCode::OK.into_response(),
-        Err(error) => (StatusCode::CONFLICT, error.to_string()).into_response(),
+        Err(error) => match error {
+            sqlx::Error::Database(db_err) => 
+                (StatusCode::CONFLICT, db_err.to_string()).into_response(),
+            _ => 
+                StatusCode::INTERNAL_SERVER_ERROR.into_response(),
+        }
     }
 }
 
