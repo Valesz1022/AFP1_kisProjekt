@@ -19,9 +19,9 @@ use tokio::task;
 /// A felhasználók modellje, megegyezően az adatbázisban tárolt adatokkal.
 #[derive(Clone, Serialize, FromRow)]
 pub struct User {
-    name: String,
+    pub name: String,
     password: String,
-    admin: bool,
+    pub admin: bool,
 }
 
 impl Debug for User {

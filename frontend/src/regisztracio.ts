@@ -59,6 +59,5 @@ function validateForm(): boolean {
 
 async function sendUser() {
     let response = await fetch(`${SERVER}/register?name=${reg_elements.username.value}&password=${reg_elements.password.value}`, { method: "POST" })
-    console.log('retek')
     console.log(response.status)
 }
