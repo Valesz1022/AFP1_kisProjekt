@@ -1,10 +1,13 @@
-import { app, BrowserWindow,ipcMain } from 'electron';
+import { app, BrowserWindow, ipcMain } from 'electron';
 import path from 'path';
 
 let window: BrowserWindow;
 
 app.on('ready', () => {
     window = new BrowserWindow({
+        webPreferences: {
+            preload: path.join(app.getAppPath(), 'dist/preload.js')
+        },
         autoHideMenuBar: true
     });
     window.loadFile(path.join(app.getAppPath(), 'html/index.html'));
@@ -18,8 +21,7 @@ app.on('window-all-closed', () => {
 });
 
 ipcMain.on('load_reg_page', () => {
-    console.log("megérkezve");
-    if(window){
+    if (window) {
         window.loadFile(path.join(app.getAppPath(), 'html/regisztracio.html'));
     }
 })
