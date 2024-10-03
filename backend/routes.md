@@ -3,7 +3,7 @@
 ### Kérés
 Végpont: /register?name=&password=\ Metódus: POST
 ### Válaszok
-#### 200 Ok
+#### 201 Created (elkészítve)
 Jelentés: Sikeres regisztráció\
 Törzs: nincs 
 #### 409 Conflict (foglalt)
@@ -59,7 +59,7 @@ Végpont: /jokes?name=&content=\
 Metódus: POST\
 Előtte be kell jelentkezni!
 ### Válasz
-#### 200 Ok
+#### 201 Created (elkészítve)
 Jelentés: Sikeres feltöltés.\
 Törzs: nincs.
 #### 401 Unauthorized (jogosulatlan hozzáférés)
@@ -89,7 +89,7 @@ Törzs: nincs
 #### 403 Forbidden (hozzáférés megtagadva)
 Jelentés: A bejelentkezett felhasználó nem admin jogosultságú.\
 Törzs: nincs
-#### 409 Conflict (foglalt)
+#### 404 Not Found (nem található)
 Jelentés: Nincs ilyen azonosító az adatbázisban.\
 Törzs: Hibaüzenet.
 #### 422 Unprocessable Entity (feldolgozhatatlan egység)
@@ -106,13 +106,13 @@ Metódus: POST\
 Előtte be kell jelentkezni!\
 Használat: vote-nak -1-nek kell lennie downvote-hoz, 1-nek upvote-hoz.
 ### Válaszok
-#### 200 Ok
+#### 201 Created (elkészítve)
 Jelentés: Sikeres szavazás.\
 Törzs: nincs
 #### 401 Unauthorized (jogosulatlan hozzáférés)
 Jelentés: Nincs bejelentkezve felhasználó.\
 Törzs: nincs
-#### 409 Conflict (foglalt)
+#### 404 Not Found (nem található)
 Jelentés: Nincs ilyen azonosító az adatbázisban.\
 Törzs: Hibaüzenet.
 #### 422 Unprocessable Entity (feldolgozhatatlan egység)
@@ -168,6 +168,7 @@ Jelentés: Valami hiba történt a szerveren.\
 Törzs: nincs
 # Elmentett viccek
 ## Felhasználó elmentett vicceinek lekérdezése
+### Kérés
 Végpont: /saved?name=\
 Metódus: GET\
 Előtte be kell jelentkezni!
@@ -189,11 +190,12 @@ Törzs: nincs
 Jelentés: Valami hiba történt a szerveren.\
 Törzs: nincs
 ## Új vicc elmentése
+### Kérés
 Végpont: /saved?name=&joke_id=\
 Metódus: POST\
 Előtte be kell jelentkezni!
 ### Válaszok
-#### 200 Ok
+#### 201 Created (elkészítve) 
 Jelentés: Sikeres módosítás.\
 Törzs: nincs
 #### 401 Unauthorized (jogosulatlan hozzáférés)
@@ -209,6 +211,7 @@ Törzs: nincs
 Jelentés: Valami hiba történt a szerveren.\
 Törzs: nincs
 ## Mentett vicc törlése mentések közül
+### Kérés
 Végpont: /saved?name=&joke_id=\
 Metódus: DELETE\
 Előtte be kell jelentkezni!
@@ -229,3 +232,11 @@ Törzs: nincs
 #### 500 Internal Server Error (belső szerverhiba)
 Jelentés: Valami hiba történt a szerveren.\
 Törzs: nincs
+# Állapot ellenőrzése
+## Kérés
+Végpont: /health_check\
+Metódus: GET
+## Válasz
+### 200 Ok
+Jelentés: Fut a szerver.\
+Törzs: {"status": "active"}
