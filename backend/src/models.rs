@@ -12,7 +12,9 @@ pub struct Joke {
 }
 
 #[derive(Deserialize, Serialize, FromRow)]
-pub struct Vote(i32);
+pub struct Vote {
+    pub vote: i32,
+}
 
 #[derive(Deserialize, Serialize, FromRow)]
 pub struct Saved {

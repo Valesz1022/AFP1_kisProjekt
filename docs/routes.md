@@ -99,9 +99,25 @@ Törzs: nincs
 Jelentés: Valami hiba történt a szerveren.\
 Törzs: nincs
 # Szavazás (upvote, downvote)
+## Meglévő szavazat lekérdezése
+### Kérés
+Végpont: /votes?name=&joke_id=\
+Metódus: GET\
+Előtte be kell jelentkezni!\
+Használat: -1 downvote, 1 upvote.
+### Válaszok
+#### 200 Ok
+Jelentés: Sikeres lekérdezés.\
+Törzs: Szavazat állapota számmal reprezentálva.
+#### 422 Unprocessable Entity (feldolgozhatatlan egység)
+Jelentés: Hibás kérés paraméterek.\
+Törzs: nincs
+#### 500 Internal Server Error (belső szerverhiba)
+Jelentés: Valami hiba történt a szerveren.\
+Törzs: nincs
 ## Új szavazat leadása
 ### Kérés
-Végpont: /votes?name=&joke_id=&vote\
+Végpont: /votes?name=&joke_id=&vote=\
 Metódus: POST\
 Előtte be kell jelentkezni!\
 Használat: vote-nak -1-nek kell lennie downvote-hoz, 1-nek upvote-hoz.
