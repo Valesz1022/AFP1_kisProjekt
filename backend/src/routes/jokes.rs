@@ -51,7 +51,7 @@ pub async fn post(
         .execute(&appstate.connection_pool)
         .await
     {
-        Ok(..) => StatusCode::OK.into_response(),
+        Ok(..) => StatusCode::CREATED.into_response(),
         Err(error) => match error {
             sqlx::Error::Database(db_err) => 
                 (StatusCode::CONFLICT, db_err.to_string()).into_response(),
@@ -78,7 +78,7 @@ pub async fn delete(
         Ok(..) => StatusCode::OK.into_response(),
         Err(error) => match error {
             sqlx::Error::Database(db_err) => 
-                (StatusCode::CONFLICT, db_err.to_string()).into_response(),
+                (StatusCode::NOT_FOUND, db_err.to_string()).into_response(),
             _ => 
                 StatusCode::INTERNAL_SERVER_ERROR.into_response(),
         }
