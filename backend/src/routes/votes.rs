@@ -17,17 +17,32 @@ pub async fn post(
     State(appstate): State<Arc<AppState>>,
     Query(params): Query<HashMap<String, String>>,
 ) -> impl IntoResponse {
+    let Some(name) = params.get("name") else {
+        return StatusCode::UNPROCESSABLE_ENTITY.into_response();
+    };
+    let Some(joke_id) = params.get("joke_id") else {
+        return StatusCode::UNPROCESSABLE_ENTITY.into_response();
+    };
+    let Some(vote) = params.get("vote") else {
+        return StatusCode::UNPROCESSABLE_ENTITY.into_response();
+    };
+
     match query(
         "INSERT INTO votes (user_name, joke_id, vote) VALUES (?, ?, ?);",
     )
-    .bind(Some(params.get("user_name")))
-    .bind(Some(params.get("joke_id")))
-    .bind(Some(params.get("vote")))
+    .bind(name)
+    .bind(joke_id)
+    .bind(vote)
     .execute(&appstate.connection_pool)
     .await
     {
         Ok(..) => StatusCode::OK.into_response(),
-        Err(error) => (StatusCode::CONFLICT, error.to_string()).into_response(),
+        Err(error) => match error {
+            sqlx::Error::Database(db_err) => 
+                (StatusCode::CONFLICT, db_err.to_string()).into_response(),
+            _ => 
+                StatusCode::INTERNAL_SERVER_ERROR.into_response(),
+        }
     }
 }
 
@@ -36,18 +51,32 @@ pub async fn put(
     State(appstate): State<Arc<AppState>>,
     Query(params): Query<HashMap<String, String>>,
 ) -> impl IntoResponse {
+    let Some(name) = params.get("name") else {
+        return StatusCode::UNPROCESSABLE_ENTITY.into_response();
+    };
+    let Some(joke_id) = params.get("joke_id") else {
+        return StatusCode::UNPROCESSABLE_ENTITY.into_response();
+    };
+    let Some(vote) = params.get("vote") else {
+        return StatusCode::UNPROCESSABLE_ENTITY.into_response();
+    };
+
     match query(
         "UPDATE votes SET vote = ? WHERE user_name = ? AND joke_id = ?;",
     )
-    .bind(Some(params.get("user_name")))
-    .bind(Some(params.get("joke_id")))
-    .bind(Some(params.get("vote")))
+    .bind(name)
+    .bind(joke_id)
+    .bind(vote)
     .execute(&appstate.connection_pool)
     .await
     {
         Ok(..) => StatusCode::OK.into_response(),
-        Err(error) => (StatusCode::INTERNAL_SERVER_ERROR, error.to_string())
-            .into_response(),
+        Err(error) => match error {
+            sqlx::Error::Database(db_err) => 
+                (StatusCode::CONFLICT, db_err.to_string()).into_response(),
+            _ => 
+                StatusCode::INTERNAL_SERVER_ERROR.into_response(),
+        }
     }
 }
 

@@ -79,7 +79,7 @@ Törzs: nincs
 Végpont: /jokes?id=\
 Metódus: DELETE\
 Előtte be kell jelentkezni egy admin jogosultságú felhaszálóval!
-### Válasz
+### Válaszok
 #### 200 Ok
 Jelentés: Sikeres törlés.\
 Törzs: nincs
@@ -91,6 +91,74 @@ Jelentés: A bejelentkezett felhasználó nem admin jogosultságú.\
 Törzs: nincs
 #### 409 Conflict (foglalt)
 Jelentés: Nincs ilyen azonosító az adatbázisban.\
+Törzs: Hibaüzenet.
+#### 422 Unprocessable Entity (feldolgozhatatlan egység)
+Jelentés: Hibás kérés paraméterek.\
+Törzs: nincs
+#### 500 Internal Server Error (belső szerverhiba)
+Jelentés: Valami hiba történt a szerveren.\
+Törzs: nincs
+# Szavazás (upvote, downvote)
+## Új szavazat leadása
+### Kérés
+Végpont: /votes?name=&joke_id=&vote\
+Metódus: POST\
+Előtte be kell jelentkezni!\
+Használat: vote-nak -1-nek kell lennie downvote-hoz, 1-nek upvote-hoz.
+### Válaszok
+#### 200 Ok
+Jelentés: Sikeres szavazás.\
+Törzs: nincs
+#### 401 Unauthorized (jogosulatlan hozzáférés)
+Jelentés: Nincs bejelentkezve felhasználó.\
+Törzs: nincs
+#### 409 Conflict (foglalt)
+Jelentés: Nincs ilyen azonosító az adatbázisban.\
+Törzs: Hibaüzenet.
+#### 422 Unprocessable Entity (feldolgozhatatlan egység)
+Jelentés: Hibás kérés paraméterek.\
+Törzs: nincs
+#### 500 Internal Server Error (belső szerverhiba)
+Jelentés: Valami hiba történt a szerveren.\
+Törzs: nincs
+## Meglévő szavazat módosítása
+### Kérés
+Végpont: /votes?name=&joke_id=&vote=\
+Metódus: PUT\
+Előtte be kell jelentkezni!\
+Használat: vote-nak -1-nek kell lennie downvote-hoz, 1-nek upvote-hoz.
+### Válaszok
+#### 200 Ok
+Jelentés: Sikeres módosítás.\
+Törzs: nincs
+#### 401 Unauthorized (jogosulatlan hozzáférés)
+Jelentés: Nincs bejelentkezve felhasználó.\
+Törzs: nincs
+#### 409 Conflict (foglalt)
+Jelentés: Nincs ilyen azonosító az adatbázisban, vagy erre még nem szavazott
+a felhasználó.\
+Törzs: Hibaüzenet.
+#### 422 Unprocessable Entity (feldolgozhatatlan egység)
+Jelentés: Hibás kérés paraméterek.\
+Törzs: nincs
+#### 500 Internal Server Error (belső szerverhiba)
+Jelentés: Valami hiba történt a szerveren.\
+Törzs: nincs
+## Meglévő szavazat törlése
+### Kérés
+Végpont: /votes?name=&joke_id=\
+Metódus: DELETE\
+Előtte be kell jelentkezni!
+### Válaszok
+#### 200 Ok
+Jelentés: Sikeres módosítás.\
+Törzs: nincs
+#### 401 Unauthorized (jogosulatlan hozzáférés)
+Jelentés: Nincs bejelentkezve felhasználó.\
+Törzs: nincs
+#### 409 Conflict (foglalt)
+Jelentés: Nincs ilyen azonosító az adatbázisban, vagy erre még nem szavazott
+a felhasználó.\
 Törzs: Hibaüzenet.
 #### 422 Unprocessable Entity (feldolgozhatatlan egység)
 Jelentés: Hibás kérés paraméterek.\
