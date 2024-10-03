@@ -32,9 +32,13 @@ async function sendLoginInfo(username: string, password: string) {
         method: "POST"
     });
 
+    if(typeof globalUsername === 'undefined'){
+        globalThis.globalUsername = '';
+    }
+
     switch(response.status){
         case 200:
-            globalUsername = username;
+            globalThis.globalUsername = username;
             if(username == "admin"){
                 window.api.load_main_page_admin();
             }

@@ -1,5 +1,3 @@
-import { Types} from './types';
-
 let main_page_admin_elements: {
     posts_container: HTMLDivElement
     delete_buttons: HTMLCollection
@@ -78,7 +76,7 @@ async function get_jokes() {
                 post.classList.add('post');
         
                 let post_left = document.createElement('div');
-                post.classList.add('post_left');
+                post_left.classList.add('post_left');
         
                 let post_left_top = document.createElement('div');
                 post_left_top.classList.add('post_left_top');
@@ -103,7 +101,7 @@ async function get_jokes() {
                 post_left_top_right.id = 'delete_img';
         
                 let delete_img = document.createElement('i');
-                delete_img.classList.add('fa-solid fa-trash', 'fa-2x');
+                delete_img.classList.add('fa-solid', 'fa-trash', 'fa-2x');
                 delete_img.setAttribute('name', `${joke.id}`);
         
                 post_left_top.appendChild(post_left_top_left);

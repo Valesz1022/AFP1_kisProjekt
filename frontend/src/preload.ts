@@ -29,6 +29,7 @@ declare global {
         api: typeof api
     }
     let SERVER: String
+    var globalUsername: string;
 }
 
 contextBridge.exposeInMainWorld('api', api)
