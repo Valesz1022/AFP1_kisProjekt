@@ -1,4 +1,7 @@
-declare namespace Types{
+
+export {};
+
+export namespace Types{
     interface Joke{
         id: number;
         user_name: string;
@@ -7,7 +10,6 @@ declare namespace Types{
     }
 }
 
-export {};
 
 declare global{
     var globalUsername : string;

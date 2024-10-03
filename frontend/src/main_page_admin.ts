@@ -1,9 +1,11 @@
+import { Types} from './types';
+
 let main_page_admin_elements: {
     posts_container: HTMLDivElement
     delete_buttons: HTMLCollection
     up_vote_buttons: HTMLCollection
     down_vote_buttons: HTMLCollection
-    new_post_buttons: HTMLButtonElement
+    new_post_button: HTMLButtonElement
     logout_button: HTMLButtonElement
 }
 
@@ -13,16 +15,24 @@ window.addEventListener('load', () => {
         delete_buttons: document.getElementsByClassName('fa-trash') as HTMLCollection,
         up_vote_buttons: document.getElementsByClassName('fa-arrow-up') as HTMLCollection,
         down_vote_buttons: document.getElementsByClassName('fa-arrow-down') as HTMLCollection,
-        new_post_buttons: document.getElementById('new_post_button') as HTMLButtonElement,
+        new_post_button: document.getElementById('new_post_button') as HTMLButtonElement,
         logout_button:document.getElementById('logout_button') as HTMLButtonElement
     }
 
+    //viccek betöltése
     get_jokes();
 
+    //kijelentkezés funkció
     main_page_admin_elements.logout_button.addEventListener('click', () => {
         logout();
     })
 
+    //Új vicc oldal
+    main_page_admin_elements.new_post_button.addEventListener('click', () =>{
+        window.api.load_new_post();
+    })
+
+    //vicc törlése
     Array.from(main_page_admin_elements.delete_buttons).forEach((delete_button) => {
         let joke_id = delete_button.getAttribute('name');
         delete_button.addEventListener('click', () => {
@@ -31,8 +41,22 @@ window.addEventListener('load', () => {
             }
         })
     })
-    
+
+    //vicc upvote
+    Array.from(main_page_admin_elements.up_vote_buttons).forEach((up_vote_button) => {
+        up_vote_button.addEventListener('click', () => {
+            up_vote_joke()
+        })
+    })
+
+    //vicc downvote
+
+
 })
+
+async function up_vote_joke() {
+    
+}
 
 async function get_jokes() {
     console.log("viccek lekérése");
