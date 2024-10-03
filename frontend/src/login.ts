@@ -32,17 +32,15 @@ async function sendLoginInfo(username: string, password: string) {
         method: "POST"
     });
 
-    //let user = await response.json();
-
     switch(response.status){
         case 200:
-            window.api.load_main_page_admin();
-            /*if(user.admin){
+            globalUsername = username;
+            if(username == "admin"){
                 window.api.load_main_page_admin();
             }
             else{
                 window.api.load_main_page_user();
-            }*/
+            }
         case 401:
             console.log("Bejelentkezés megtagadva");
         case 500:
