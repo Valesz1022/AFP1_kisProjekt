@@ -15,6 +15,10 @@ const api = {
 
     load_main_page_user: () => {
         ipcRenderer.send('load_main_page_user')
+    },
+
+    load_new_post: () => {
+        ipcRenderer.send('load_new_post')
     }
 }
 

@@ -6,13 +6,14 @@
         <title>Vic Explorer</title>
         <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
         <link rel="stylesheet" href="../css/new_post.css">
+        <script src="../dist/new_post.js"></script>
     </head>
     <body>
         <div class="container">
             <div class="header" id="new_post_header">
                 <h1>Vicc-explorer</h1>
                 <div class="nav_buttons">
-                    <button class="back_button">Vissza</button>
+                    <button class="back_button" id="back_to_main_page">Vissza</button>
                 </div>
             </div>
             <div class="body" id="new:post_body">
@@ -34,7 +35,7 @@
                             <label for="content">Tartalom:</label>
                             <textarea class="input_box" id="content_box" name="content" required></textarea>
                         </div>
-                        <button type="submit" class="submit_button">Közzététel</button>
+                        <button type="submit" class="submit_button" id="post_joke">Közzététel</button>
                     </form>
                 </div>
             </div>

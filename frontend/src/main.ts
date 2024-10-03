@@ -43,3 +43,9 @@ ipcMain.on('load_main_page_user', () => {
         window.loadFile(path.join(app.getAppPath(), 'html/main_page_user.html'));
     }
 })
+
+ipcMain.on('load_new_post', () =>{
+    if(window){
+        window.loadFile(path.join(app.getAppPath(), 'html/new_post.html'));
+    }
+})
