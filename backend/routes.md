@@ -166,3 +166,66 @@ Törzs: nincs
 #### 500 Internal Server Error (belső szerverhiba)
 Jelentés: Valami hiba történt a szerveren.\
 Törzs: nincs
+# Elmentett viccek
+## Felhasználó elmentett vicceinek lekérdezése
+Végpont: /saved?name=\
+Metódus: GET\
+Előtte be kell jelentkezni!
+### Válaszok
+#### 200 Ok
+Jelentés: Sikeres lekérdezés.\
+Törzs: Az adott felhasználó által elmentett viccek.
+#### 401 Unauthorized (jogosulatlan hozzáférés)
+Jelentés: Nincs bejelentkezve felhasználó.\
+Törzs: nincs
+#### 404 Not Found (nem található)
+Jelentés: Nincs ilyen felhasználó az adatbázisban, vagy még nem mentett
+el semmit.\
+Törzs: Hibaüzenet.
+#### 422 Unprocessable Entity (feldolgozhatatlan egység)
+Jelentés: Hibás kérés paraméterek.\
+Törzs: nincs
+#### 500 Internal Server Error (belső szerverhiba)
+Jelentés: Valami hiba történt a szerveren.\
+Törzs: nincs
+## Új vicc elmentése
+Végpont: /saved?name=&joke_id=\
+Metódus: POST\
+Előtte be kell jelentkezni!
+### Válaszok
+#### 200 Ok
+Jelentés: Sikeres módosítás.\
+Törzs: nincs
+#### 401 Unauthorized (jogosulatlan hozzáférés)
+Jelentés: Nincs bejelentkezve felhasználó.\
+Törzs: nincs
+#### 404 Not Found
+Jelentés: Nincs ilyen felhasználó vagy poszt az adatbázisban.\
+Törzs: Hibaüzenet.
+#### 422 Unprocessable Entity (feldolgozhatatlan egység)
+Jelentés: Hibás kérés paraméterek.\
+Törzs: nincs
+#### 500 Internal Server Error (belső szerverhiba)
+Jelentés: Valami hiba történt a szerveren.\
+Törzs: nincs
+## Mentett vicc törlése mentések közül
+Végpont: /saved?name=&joke_id=\
+Metódus: DELETE\
+Előtte be kell jelentkezni!
+### Válaszok
+#### 200 Ok
+Jelentés: Sikeres törlés.\
+Törzs: nincs
+#### 401 Unauthorized (jogosulatlan hozzáférés)
+Jelentés: Nincs bejelentkezve felhasználó.\
+Törzs: nincs
+#### 404 Not Found
+Jelentés: Nincs ilyen felhasználó vagy poszt az adatbázisban, vagy nincs neki
+ez a poszt elmentve.\
+Törzs: Hibaüzenet.
+#### 422 Unprocessable Entity (feldolgozhatatlan egység)
+Jelentés: Hibás kérés paraméterek.\
+Törzs: nincs
+#### 500 Internal Server Error (belső szerverhiba)
+Jelentés: Valami hiba történt a szerveren.\
+Törzs: nincs
