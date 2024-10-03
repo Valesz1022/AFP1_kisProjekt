@@ -8,10 +8,41 @@ use axum::{
     response::IntoResponse,
     Json,
 };
-use sqlx::query;
+use sqlx::{query, query_as, MySql};
 use tracing::instrument;
 
-use crate::AppState;
+use crate::{models::Vote, AppState};
+
+#[instrument(name = "votes::get", skip(appstate))]
+pub async fn get(
+    State(appstate): State<Arc<AppState>>,
+    Query(params): Query<HashMap<String, String>>,
+) -> impl IntoResponse {
+    let Some(name) = params.get("name") else {
+        return StatusCode::UNPROCESSABLE_ENTITY.into_response();
+    };
+    let Some(joke_id) = params.get("joke_id") else {
+        return StatusCode::UNPROCESSABLE_ENTITY.into_response();
+    };
+
+    match query_as::<MySql, Vote>(
+        "SELECT vote FROM votes WHERE user_name = ? AND joke_id = ?;",
+    )
+    .bind(name)
+    .bind(joke_id)
+    .fetch_one(&appstate.connection_pool)
+    .await
+    {
+        Ok(vote) => (StatusCode::OK, Json(vote)).into_response(),
+        Err(error) => match error {
+            sqlx::Error::Database(db_err) => {
+                (StatusCode::NOT_FOUND, Json(db_err.to_string()))
+                    .into_response()
+            }
+            _ => StatusCode::INTERNAL_SERVER_ERROR.into_response(),
+        },
+    }
+}
 
 #[instrument(name = "votes::post", skip(appstate))]
 pub async fn post(

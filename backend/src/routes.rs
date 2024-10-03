@@ -29,7 +29,8 @@ pub fn user_router() -> Router<Arc<AppState>> {
         .route("/jokes", routing::post(jokes::post))
         .route(
             "/votes",
-            routing::post(votes::post)
+            routing::get(votes::get)
+                .post(votes::post)
                 .put(votes::put)
                 .delete(votes::delete),
         )
