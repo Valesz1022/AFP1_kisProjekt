@@ -5,7 +5,9 @@ Végpont: /register?name=&password=\
 Metódus: POST
 ### Válaszok
 #### 200 Ok
-Jelentés: Sikeres regisztráció\ Törzs: nincs #### 409 Conflict (foglalt)
+Jelentés: Sikeres regisztráció\
+Törzs: nincs 
+#### 409 Conflict (foglalt)
 Jelentés: Sikertelen regisztráció, létezik már a felhasználó\
 Törzs: Hibaüzenet.
 #### 422 Unprocessable Entity (feldolgozhatatlan egység)
