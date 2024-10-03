@@ -44,7 +44,7 @@ pub async fn post(
     let Some(content) = params.get("content") else {
         return StatusCode::UNPROCESSABLE_ENTITY.into_response();
     };
-    
+
     match query("INSERT INTO jokes (user_name, content) VALUES (?, ?);")
         .bind(user_name)
         .bind(content)
@@ -53,11 +53,11 @@ pub async fn post(
     {
         Ok(..) => StatusCode::CREATED.into_response(),
         Err(error) => match error {
-            sqlx::Error::Database(db_err) => 
-                (StatusCode::CONFLICT, db_err.to_string()).into_response(),
-            _ => 
-                StatusCode::INTERNAL_SERVER_ERROR.into_response(),
-        }
+            sqlx::Error::Database(db_err) => {
+                (StatusCode::CONFLICT, db_err.to_string()).into_response()
+            }
+            _ => StatusCode::INTERNAL_SERVER_ERROR.into_response(),
+        },
     }
 }
 
@@ -77,10 +77,10 @@ pub async fn delete(
     {
         Ok(..) => StatusCode::OK.into_response(),
         Err(error) => match error {
-            sqlx::Error::Database(db_err) => 
-                (StatusCode::NOT_FOUND, db_err.to_string()).into_response(),
-            _ => 
-                StatusCode::INTERNAL_SERVER_ERROR.into_response(),
-        }
+            sqlx::Error::Database(db_err) => {
+                (StatusCode::NOT_FOUND, db_err.to_string()).into_response()
+            }
+            _ => StatusCode::INTERNAL_SERVER_ERROR.into_response(),
+        },
     }
 }

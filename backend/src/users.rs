@@ -20,7 +20,7 @@ use tokio::task;
 #[derive(Clone, Serialize, FromRow)]
 pub struct User {
     pub name: String,
-    password: String,
+    pub password: String,
     pub admin: bool,
 }
 

@@ -6,7 +6,7 @@ use axum::{
     extract::{Query, State},
     http::StatusCode,
     response::IntoResponse,
-    Json
+    Json,
 };
 use sqlx::query;
 use tracing::instrument;
@@ -35,10 +35,10 @@ pub async fn post(
     {
         Ok(..) => StatusCode::CREATED.into_response(),
         Err(error) => match error {
-            sqlx::Error::Database(db_err) => 
-                (StatusCode::CONFLICT, Json(db_err.to_string())).into_response(),
-            _ => 
-                StatusCode::INTERNAL_SERVER_ERROR.into_response(),
-        }
+            sqlx::Error::Database(db_err) => {
+                (StatusCode::CONFLICT, Json(db_err.to_string())).into_response()
+            }
+            _ => StatusCode::INTERNAL_SERVER_ERROR.into_response(),
+        },
     }
 }
