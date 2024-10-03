@@ -35,7 +35,7 @@ pub async fn get(
     {
         Ok(vote) => (StatusCode::OK, Json(vote)).into_response(),
         Err(error) => match error {
-            sqlx::Error::Database(_) => {
+            sqlx::Error::RowNotFound => {
                 (StatusCode::OK, Json(Vote { vote: 0 })).into_response()
             }
             _ => StatusCode::INTERNAL_SERVER_ERROR.into_response(),
