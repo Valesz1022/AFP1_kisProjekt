@@ -66,13 +66,21 @@ pub async fn delete(
     State(appstate): State<Arc<AppState>>,
     Query(params): Query<HashMap<String, String>>,
 ) -> impl IntoResponse {
+    let Some(id) = params.get("id") else {
+        return StatusCode::UNPROCESSABLE_ENTITY.into_response();
+    };
+
     match query("DELETE FROM jokes WHERE id = ?;")
-        .bind(Some(params.get("id")))
+        .bind(id)
         .execute(&appstate.connection_pool)
         .await
     {
         Ok(..) => StatusCode::OK.into_response(),
-        Err(error) => (StatusCode::INTERNAL_SERVER_ERROR, error.to_string())
-            .into_response(),
+        Err(error) => match error {
+            sqlx::Error::Database(db_err) => 
+                (StatusCode::CONFLICT, db_err.to_string()).into_response(),
+            _ => 
+                StatusCode::INTERNAL_SERVER_ERROR.into_response(),
+        }
     }
 }

@@ -1,8 +1,7 @@
 # Felhasználók
 ## Regisztráció
 ### Kérés
-Végpont: /register?name=&password=\
-Metódus: POST
+Végpont: /register?name=&password=\ Metódus: POST
 ### Válaszok
 #### 200 Ok
 Jelentés: Sikeres regisztráció\
@@ -68,6 +67,30 @@ Jelentés: Nincs bejelentkezve felhasználó.\
 Törzs: nincs
 #### 409 Conflict (foglalt)
 Jelentés: Már van ilyen vicc ettől a felhasználótól.\
+Törzs: Hibaüzenet.
+#### 422 Unprocessable Entity (feldolgozhatatlan egység)
+Jelentés: Hibás kérés paraméterek.\
+Törzs: nincs
+#### 500 Internal Server Error (belső szerverhiba)
+Jelentés: Valami hiba történt a szerveren.\
+Törzs: nincs
+## Törlés
+### Kérés
+Végpont: /jokes?id=\
+Metódus: DELETE\
+Előtte be kell jelentkezni egy admin jogosultságú felhaszálóval!
+### Válasz
+#### 200 Ok
+Jelentés: Sikeres törlés.\
+Törzs: nincs
+#### 401 Unauthorized (jogosulatlan hozzáférés)
+Jelentés: Nincs bejelentkezve felhasználó.\
+Törzs: nincs
+#### 403 Forbidden (hozzáférés megtagadva)
+Jelentés: A bejelentkezett felhasználó nem admin jogosultságú.\
+Törzs: nincs
+#### 409 Conflict (foglalt)
+Jelentés: Nincs ilyen azonosító az adatbázisban.\
 Törzs: Hibaüzenet.
 #### 422 Unprocessable Entity (feldolgozhatatlan egység)
 Jelentés: Hibás kérés paraméterek.\
