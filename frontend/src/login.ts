@@ -32,13 +32,10 @@ async function sendLoginInfo(username: string, password: string) {
         method: "POST"
     });
 
-    if(typeof globalUsername === 'undefined'){
-        globalThis.globalUsername = '';
-    }
-
     switch(response.status){
         case 200:
-            globalThis.globalUsername = username;
+            localStorage.setItem('globalUsername', username);
+            sessionStorage.setItem('isLoggedIn', 'true');
             if(username == "admin"){
                 window.api.load_main_page_admin();
             }
@@ -46,8 +43,8 @@ async function sendLoginInfo(username: string, password: string) {
                 window.api.load_main_page_user();
             }
         case 401:
-            console.log("Bejelentkezés megtagadva");
+            console.log("Sikertelen bejelentkezés valamilyen hiba miatt");
         case 500:
-            console.log("Hiba történt");
+            console.log(" Sikertelen bejelentkezés szerveroldali hiba miatt");
     }
 }

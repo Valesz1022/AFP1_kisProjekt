@@ -24,28 +24,36 @@ ipcMain.on('load_reg_page', () => {
     if (window) {
         window.loadFile(path.join(app.getAppPath(), 'html/regisztracio.html'));
     }
+    window.webContents.openDevTools();
 })
 
 ipcMain.on('load_login_page', () => {
     if (window) {
         window.loadFile(path.join(app.getAppPath(), 'html/index.html'));
     }
+    window.webContents.openDevTools();
 });
 
 ipcMain.on('load_main_page_admin', () => {
     if(window){
         window.loadFile(path.join(app.getAppPath(), 'html/main_page_admin.html'));
     }
+    window.webContents.openDevTools();
+    console.log(globalThis.globalUsername);
 })
 
 ipcMain.on('load_main_page_user', () => {
     if(window){
         window.loadFile(path.join(app.getAppPath(), 'html/main_page_user.html'));
     }
+    window.webContents.openDevTools();
+    console.log(globalThis.globalUsername);
 })
 
 ipcMain.on('load_new_post', () =>{
     if(window){
         window.loadFile(path.join(app.getAppPath(), 'html/new_post.html'));
     }
+    window.webContents.openDevTools();
+    console.log(globalThis.globalUsername);
 })
