@@ -35,7 +35,6 @@ async function sendLoginInfo(username: string, password: string) {
     switch(response.status){
         case 200:
             localStorage.setItem('globalUsername', username);
-            sessionStorage.setItem('isLoggedIn', 'true');
             if(username == "admin"){
                 window.api.load_main_page_admin();
             }

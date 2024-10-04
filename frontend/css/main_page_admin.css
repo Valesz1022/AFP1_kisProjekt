@@ -92,6 +92,10 @@ h1 {
     display: flex;
 }
 
+.voted{
+    color: #e53935;
+}
+
 .new_post_button {
     position: fixed;
     bottom: 20px;

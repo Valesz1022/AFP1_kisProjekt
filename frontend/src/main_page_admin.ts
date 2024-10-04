@@ -32,30 +32,83 @@ window.addEventListener('load', () => {
         window.api.load_new_post();
     })
 
-    //vicc törlése
-    Array.from(main_page_admin_elements.delete_buttons).forEach((delete_button) => {
-        let joke_id = delete_button.getAttribute('name');
-        delete_button.addEventListener('click', () => {
-            if (joke_id) {
-                delete_joke(joke_id);
-            }
-        })
-    })
-
-    //vicc upvote
-    Array.from(main_page_admin_elements.up_vote_buttons).forEach((up_vote_button) => {
-        up_vote_button.addEventListener('click', () => {
-            up_vote_joke()
-        })
-    })
-
-    //vicc downvote
-
 
 })
 
-async function up_vote_joke() {
+async function referesh_vote_count(joke_id: string) {
+    let response = await fetch(`${SERVER}/votes?name=${localStorage.getItem("globalUsername")}joke_id=${joke_id}`, {
+        method: "GET"
+    });
 
+    let number = await response.json();
+
+    switch (response.status) {
+        case 200:
+            let upvote_number_p = document.getElementsByName(`${joke_id}_number`)[0] as HTMLTextAreaElement;
+            upvote_number_p.value = number;
+            break;
+        case 422:
+            console.log("Hibás paraméterek");
+            break;
+        case 500:
+            console.log("Hiba a szerveren");
+            break;
+    }
+}
+
+async function up_vote_joke(joke_id: string) {
+    let response = await fetch(`${SERVER}/votes?name=${localStorage.getItem("globalUsername")}joke_id=${joke_id}vote=1`, {
+        method: "POST"
+    });
+
+    switch (response.status) {
+        case 201:
+            console.log("sikeres szavazás");
+            let upvote_button = document.getElementsByName(`${joke_id}_upvote`)[0] as HTMLIFrameElement;
+            upvote_button.classList.add('voted');
+            referesh_vote_count(joke_id);
+            break;
+        case 401:
+            console.log("Nincs bejelentkezve");
+            break;
+        case 404:
+            console.log("nincs ilyen azonosító");
+            break;
+        case 422:
+            console.log("Hibás paraméterek");
+            break;
+        case 500:
+            console.log("Hiba a szerveren");
+            break;
+    }
+
+}
+
+async function down_vote_joke(joke_id: string) {
+    let response = await fetch(`${SERVER}/votes?name=${localStorage.getItem("globalUsername")}joke_id=${joke_id}vote=-1`, {
+        method: "POST"
+    });
+
+    switch (response.status) {
+        case 201:
+            console.log("sikeres szavazás");
+            let down_vote_button = document.getElementsByName(`${joke_id}_downvote`)[0] as HTMLIFrameElement;
+            down_vote_button.classList.add('voted');
+            referesh_vote_count(joke_id);
+            break;
+        case 401:
+            console.log("Nincs bejelentkezve");
+            break;
+        case 404:
+            console.log("nincs ilyen azonosító");
+            break;
+        case 422:
+            console.log("Hibás paraméterek");
+            break;
+        case 500:
+            console.log("Hiba a szerveren");
+            break;
+    }
 }
 
 async function get_jokes() {
@@ -104,12 +157,12 @@ async function get_jokes() {
 
                 let delete_img = document.createElement('i');
                 delete_img.classList.add('fa-solid', 'fa-trash', 'fa-2x');
-                delete_img.setAttribute('name', `${joke.id}`);
+                delete_img.setAttribute('id', `${joke.id}`);
+                delete_img.setAttribute('name', `${joke.id}_delete`);
 
                 post_left_top.appendChild(post_left_top_left);
                 post_left_top.appendChild(post_left_top_right);
                 post_left_top_right.appendChild(delete_img);
-
 
                 let post_left_bottom = document.createElement('div');
                 post_left_bottom.classList.add('post_left_bottom');
@@ -133,11 +186,15 @@ async function get_jokes() {
                 up_vote.classList.add('up_vote');
                 let up_vote_icon = document.createElement('i');
                 up_vote_icon.classList.add('fa-solid', 'fa-arrow-up', 'fa-2x');
+                up_vote_icon.setAttribute('id', `${joke.id}`);
+                up_vote_icon.setAttribute('name', `${joke.id}_upvote`);
                 up_vote.appendChild(up_vote_icon);
 
                 let vote_number = document.createElement('div');
                 let number = document.createElement('p');
                 number.textContent = joke.votes.toString();
+                number.setAttribute('id', `${joke.id}`);
+                number.setAttribute('name', `${joke.id}_vote_number`);
                 vote_number.appendChild(number);
 
 
@@ -145,6 +202,8 @@ async function get_jokes() {
                 down_vote.classList.add('down_vote');
                 let down_vote_icon = document.createElement('i');
                 down_vote_icon.classList.add('fa-solid', 'fa-arrow-down', 'fa-2x');
+                down_vote_icon.setAttribute('id', `${joke.id}`);
+                down_vote_icon.setAttribute('name', `${joke.id}_downvote`);
                 down_vote.appendChild(down_vote_icon);
 
                 post_right.appendChild(up_vote);
@@ -156,6 +215,44 @@ async function get_jokes() {
 
                 main_page_admin_elements.posts_container.appendChild(post);
             });
+
+            //vicc törlése
+
+            Array.from(main_page_admin_elements.delete_buttons).forEach((delete_button) => {
+
+                delete_button.addEventListener('click', () => {
+                    let joke_id = delete_button.getAttribute('name');
+                    if (joke_id) {
+                        delete_joke(joke_id);
+                        console.log("törlés próba");
+                    }
+                    else {
+                        console.log(joke_id);
+                    }
+                })
+            })
+
+            //vicc upvote
+            Array.from(main_page_admin_elements.up_vote_buttons).forEach((up_vote_button) => {
+                up_vote_button.addEventListener('click', () => {
+                    let joke_id = up_vote_button.getAttribute('id');
+                    if (joke_id) {
+                        up_vote_joke(joke_id);
+                        console.log("szavazás próba");
+                    }
+                })
+            })
+
+            //vicc downvote
+            Array.from(main_page_admin_elements.down_vote_buttons).forEach((down_vote_button) => {
+                down_vote_button.addEventListener('click', () => {
+                    let joke_id = down_vote_button.getAttribute('id');
+                    if (joke_id) {
+                        down_vote_joke(joke_id);
+                        console.log("szavazás próba");
+                    }
+                })
+            })
             break;
         case 500:
             console.log("Hiba történt");
@@ -186,9 +283,11 @@ async function delete_joke(id: string) {
         method: "DELETE"
     });
 
+    console.log(response.status);
     switch (response.status) {
         case 200:
             console.log("Sikeres törlés");
+            window.api.load_main_page_admin();
             break;
         case 401:
             console.log("Nincs bejelentkezve felhasználó.");
@@ -201,7 +300,9 @@ async function delete_joke(id: string) {
             break;
         case 422:
             console.log("Hibás kérés paraméterek.");
+            break;
         case 500:
             console.log("Valami hiba történt a szerveren.");
+            break;
     }
 }
