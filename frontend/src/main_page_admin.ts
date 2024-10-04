@@ -113,12 +113,12 @@ async function down_vote_joke(joke_id: string) {
     }
 }
 
-async function delete_vote(joke_id:string) {
+async function delete_vote(joke_id: string) {
     let response = await fetch(`${SERVER}/votes?name=${localStorage.getItem("globalUsername")}&joke_id=${joke_id}`, {
         method: "DELETE"
     });
 
-    switch(response.status){
+    switch (response.status) {
         case 200:
             let up_vote_button = document.getElementsByName(`${joke_id}_upvote`)[0] as HTMLButtonElement;
             up_vote_button.classList.remove('voted');
@@ -141,21 +141,21 @@ async function delete_vote(joke_id:string) {
     }
 }
 
-async function change_vote(joke_id:string, vote: string) {
+async function change_vote(joke_id: string, vote: string) {
     let response = await fetch(`${SERVER}/jokes?name=${localStorage.getItem("globalUsername")}&joke_id=${joke_id}&vote=${vote}`, {
         method: "PUT"
     });
 
-    switch(response.status){
+    switch (response.status) {
         case 200:
             let up_vote_button = document.getElementsByName(`${joke_id}_upvote`)[0] as HTMLButtonElement;
             let down_vote_button = document.getElementsByName(`${joke_id}_downvote`)[0] as HTMLButtonElement;
-            if(vote === '1'){
+            if (vote === '1') {
                 up_vote_button.classList.add('voted');
                 down_vote_button.classList.remove('voted');
                 console.log("Szavazat módosítva upvote-ra");
             }
-            if(vote === '-1'){
+            if (vote === '-1') {
                 up_vote_button.classList.remove('voted');
                 down_vote_button.classList.add('voted');
                 console.log("Szavazat módosítva downvote-ra");
@@ -306,10 +306,10 @@ async function get_jokes() {
                     if (joke_id) {
                         if (up_vote_button.classList.contains('voted')) {
                             delete_vote(joke_id);
-                        } else if(down_vote_button.classList.contains('voted')) {
+                        } else if (down_vote_button.classList.contains('voted')) {
                             change_vote(joke_id, '1');
                         }
-                        else{
+                        else {
                             up_vote_joke(joke_id);
                             console.log("szavazás próba");
                         }
@@ -325,10 +325,10 @@ async function get_jokes() {
                     if (joke_id) {
                         if (down_vote_button.classList.contains('voted')) {
                             delete_vote(joke_id);
-                        } else if(down_vote_button.classList.contains('voted')) {
+                        } else if (down_vote_button.classList.contains('voted')) {
                             change_vote(joke_id, '-1');
                         }
-                        else{
+                        else {
                             up_vote_joke(joke_id);
                             console.log("szavazás próba");
                         }

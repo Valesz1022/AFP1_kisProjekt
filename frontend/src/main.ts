@@ -35,7 +35,7 @@ ipcMain.on('load_login_page', () => {
 });
 
 ipcMain.on('load_main_page_admin', () => {
-    if(window){
+    if (window) {
         window.loadFile(path.join(app.getAppPath(), 'html/main_page_admin.html'));
     }
     window.webContents.openDevTools();
@@ -43,15 +43,15 @@ ipcMain.on('load_main_page_admin', () => {
 })
 
 ipcMain.on('load_main_page_user', () => {
-    if(window){
+    if (window) {
         window.loadFile(path.join(app.getAppPath(), 'html/main_page_user.html'));
     }
     window.webContents.openDevTools();
     console.log(globalThis.globalUsername);
 })
 
-ipcMain.on('load_new_post', () =>{
-    if(window){
+ipcMain.on('load_new_post', () => {
+    if (window) {
         window.loadFile(path.join(app.getAppPath(), 'html/new_post.html'));
     }
     window.webContents.openDevTools();

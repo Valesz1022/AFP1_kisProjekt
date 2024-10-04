@@ -14,13 +14,13 @@ window.addEventListener('load', () => {
         post_joke_button: document.getElementById('post_joke') as HTMLButtonElement,
         user_name: localStorage.getItem('globalUsername') as string
     }
-    reLogin2(localStorage.getItem('globalUsername'),localStorage.getItem('globalPassword'));
+    reLogin2(localStorage.getItem('globalUsername'), localStorage.getItem('globalPassword'));
 
     new_post_elements.back_button.addEventListener('click', () => {
-        if(new_post_elements.user_name == "admin"){
+        if (new_post_elements.user_name == "admin") {
             window.api.load_main_page_admin();
         }
-        else{
+        else {
             window.api.load_main_page_user();
         }
     })
@@ -31,12 +31,12 @@ window.addEventListener('load', () => {
 
 })
 
-async function post_joke(username:string, content: string) {
+async function post_joke(username: string, content: string) {
     let response = await fetch(`${SERVER}/jokes?user_name=${username}&content=${content}`, {
         method: "POST"
     });
 
-    switch(response.status){
+    switch (response.status) {
         case 201:
             console.log("Sikeres posztolás");
             break;
