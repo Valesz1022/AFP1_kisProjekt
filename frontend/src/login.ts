@@ -9,7 +9,7 @@ window.addEventListener('load', () => {
     login_elements = {
         nav_bar_reg_button:
             document.getElementById('nav_bar_reg_button') as HTMLButtonElement,
-        login_username: 
+        login_username:
             document.getElementById('login_username') as HTMLInputElement,
         login_password:
             document.getElementById('login_password') as HTMLInputElement,
@@ -21,8 +21,7 @@ window.addEventListener('load', () => {
         window.api.load_reg_page()
     })
 
-    login_elements.login_button.addEventListener('click', (e) =>
-    {
+    login_elements.login_button.addEventListener('click', (e) => {
         sendLoginInfo(login_elements.login_username.value, login_elements.login_password.value);
     })
 })
@@ -32,13 +31,14 @@ async function sendLoginInfo(username: string, password: string) {
         method: "POST"
     });
 
-    switch(response.status){
+    switch (response.status) {
         case 200:
             localStorage.setItem('globalUsername', username);
-            if(username == "admin"){
+            localStorage.setItem('globalPassword', password);
+            if (username == "admin") {
                 window.api.load_main_page_admin();
             }
-            else{
+            else {
                 window.api.load_main_page_user();
             }
         case 401:
@@ -47,3 +47,4 @@ async function sendLoginInfo(username: string, password: string) {
             console.log(" Sikertelen bejelentkezés szerveroldali hiba miatt");
     }
 }
+

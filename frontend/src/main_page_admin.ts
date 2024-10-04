@@ -47,6 +47,7 @@ async function referesh_vote_count(joke_id: string) {
         case 200:
             let upvote_number_p = document.getElementsByName(`${joke_id}_number`)[0] as HTMLTextAreaElement;
             upvote_number_p.value = number;
+            console.log("szavazat szám frissítve");
             break;
         case 422:
             console.log("Hibás paraméterek");
@@ -108,6 +109,70 @@ async function down_vote_joke(joke_id: string) {
             break;
         case 500:
             console.log("Hiba a szerveren");
+            break;
+    }
+}
+
+async function delete_vote(joke_id:string) {
+    let response = await fetch(`${SERVER}/votes?name=${localStorage.getItem("globalUsername")}&joke_id=${joke_id}`, {
+        method: "DELETE"
+    });
+
+    switch(response.status){
+        case 200:
+            let up_vote_button = document.getElementsByName(`${joke_id}_upvote`)[0] as HTMLButtonElement;
+            up_vote_button.classList.remove('voted');
+            console.log("Szavazás törölve");
+            referesh_vote_count(joke_id);
+            break;
+        case 401:
+            console.log("Nincs bejelentkezve a felhasználó");
+            break;
+        case 409:
+            console.log("Nincs ilyen azonosító, vagy erre még nem szavazott");
+            break;
+        case 422:
+            console.log("Hibás paraméterek");
+            break;
+        case 500:
+            console.log("Valami hiba történt a szerveren");
+            break;
+
+    }
+}
+
+async function change_vote(joke_id:string, vote: string) {
+    let response = await fetch(`${SERVER}/jokes?name=${localStorage.getItem("globalUsername")}&joke_id=${joke_id}&vote=${vote}`, {
+        method: "PUT"
+    });
+
+    switch(response.status){
+        case 200:
+            let up_vote_button = document.getElementsByName(`${joke_id}_upvote`)[0] as HTMLButtonElement;
+            let down_vote_button = document.getElementsByName(`${joke_id}_downvote`)[0] as HTMLButtonElement;
+            if(vote === '1'){
+                up_vote_button.classList.add('voted');
+                down_vote_button.classList.remove('voted');
+                console.log("Szavazat módosítva upvote-ra");
+            }
+            if(vote === '-1'){
+                up_vote_button.classList.remove('voted');
+                down_vote_button.classList.add('voted');
+                console.log("Szavazat módosítva downvote-ra");
+            }
+            referesh_vote_count(joke_id);
+            break;
+        case 401:
+            console.log("Nincs bejelentkezve a felhasználó");
+            break;
+        case 409:
+            console.log("Nincs ilyen azonosító, vagy erre még nem szavazott");
+            break;
+        case 422:
+            console.log("Hibás paraméterek");
+            break;
+        case 500:
+            console.log("Valami hiba történt a szerveren");
             break;
     }
 }
@@ -237,9 +302,18 @@ async function get_jokes() {
             Array.from(main_page_admin_elements.up_vote_buttons).forEach((up_vote_button) => {
                 up_vote_button.addEventListener('click', () => {
                     let joke_id = up_vote_button.getAttribute('id');
+                    let down_vote_button = document.getElementsByName(`${joke_id}_downvote`)[0] as HTMLButtonElement;
                     if (joke_id) {
-                        up_vote_joke(joke_id);
-                        console.log("szavazás próba");
+                        if (up_vote_button.classList.contains('voted')) {
+                            delete_vote(joke_id);
+                        } else if(down_vote_button.classList.contains('voted')) {
+                            change_vote(joke_id, '1');
+                        }
+                        else{
+                            up_vote_joke(joke_id);
+                            console.log("szavazás próba");
+                        }
+
                     }
                 })
             })
@@ -249,8 +323,15 @@ async function get_jokes() {
                 down_vote_button.addEventListener('click', () => {
                     let joke_id = down_vote_button.getAttribute('id');
                     if (joke_id) {
-                        down_vote_joke(joke_id);
-                        console.log("szavazás próba");
+                        if (down_vote_button.classList.contains('voted')) {
+                            delete_vote(joke_id);
+                        } else if(down_vote_button.classList.contains('voted')) {
+                            change_vote(joke_id, '-1');
+                        }
+                        else{
+                            up_vote_joke(joke_id);
+                            console.log("szavazás próba");
+                        }
                     }
                 })
             })
