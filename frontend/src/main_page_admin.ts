@@ -16,6 +16,7 @@ window.addEventListener('load', () => {
         new_post_button: document.getElementById('new_post_button') as HTMLButtonElement,
         logout_button: document.getElementById('logout_button') as HTMLButtonElement
     }
+    reLogin(localStorage.getItem('globalUsername'), localStorage.getItem('globalPassword'));
 
     //viccek betöltése
     get_jokes();
@@ -57,7 +58,7 @@ async function referesh_vote_count(joke_id: string) {
 }
 
 async function up_vote_joke(joke_id: string) {
-    let response = await fetch(`${SERVER}/votes?name=${localStorage.getItem("globalUsername")}joke_id=${joke_id}vote=1`, {
+    let response = await fetch(`${SERVER}/votes?name=${localStorage.getItem("globalUsername")}&joke_id=${joke_id}&vote=1`, {
         method: "POST"
     });
 
@@ -85,7 +86,7 @@ async function up_vote_joke(joke_id: string) {
 }
 
 async function down_vote_joke(joke_id: string) {
-    let response = await fetch(`${SERVER}/votes?name=${localStorage.getItem("globalUsername")}joke_id=${joke_id}vote=-1`, {
+    let response = await fetch(`${SERVER}/votes?name=${localStorage.getItem("globalUsername")}&joke_id=${joke_id}&vote=-1`, {
         method: "POST"
     });
 
@@ -267,10 +268,11 @@ async function logout() {
 
     switch (response.status) {
         case 200:
+            localStorage.clear();
             window.api.load_login_page();
             break;
         case 401:
-            console.log("Sikertelen bejelentkezés, nincsen bejelentkezve a felhasználó.");
+            console.log("Sikertelen kijelentkezés, nincsen bejelentkezve a felhasználó.");
             break;
         case 500:
             console.log("Sikertelen kijelentkezés, valamilyen szerveroldali hiba miatt");
@@ -303,6 +305,18 @@ async function delete_joke(id: string) {
             break;
         case 500:
             console.log("Valami hiba történt a szerveren.");
+            break;
+    }
+}
+
+async function reLogin(username: string | null, password: string | null) {
+    let response = await fetch(`${SERVER}/login?name=${username}&password=${password}`, {
+        method: "POST"
+    });
+
+    switch (response.status) {
+        case 200:
+            console.log("újra bejelentkezve");
             break;
     }
 }
