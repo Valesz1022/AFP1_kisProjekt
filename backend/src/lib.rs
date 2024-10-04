@@ -2,7 +2,10 @@
 
 use std::{io, sync::Arc};
 
-use axum::extract::Request;
+use axum::{
+    extract::Request,
+    middleware::{self, Next},
+};
 use axum_login::{
     login_required, permission_required,
     tower_sessions::{ExpiredDeletion, Expiry, SessionManagerLayer},
@@ -133,6 +136,7 @@ impl Application {
                     }
                 },
             ))
+            .layer(middleware::from_fn(add_cors))
             .with_state(app_state);
 
         let listener = {
@@ -196,4 +200,20 @@ impl Application {
             _ = terminate => { deletion_task_abort_handle.abort() },
         }
     }
+}
+
+/// A CORS miatt engedélyezni kell minden domainről kéréseket, illetve minden
+/// headert a kérésekben.
+/// Nem a legbiztonságosabb, hiszen így minden domain ténylegesen minden headert
+/// felküldhet, de sajnos más megoldás most nincs, mivel a frontend nem fut fix
+/// IP címen.
+async fn add_cors(request: Request, next: Next) {
+    let mut response = next.run(request).await;
+
+    response
+        .headers_mut()
+        .append("Access-Control-Allow-Origin", "*".try_into().unwrap());
+    response
+        .headers_mut()
+        .append("Access-Control-Allow-Headers", "*".try_into().unwrap());
 }
