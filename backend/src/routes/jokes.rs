@@ -58,6 +58,9 @@ pub async fn post(
             sqlx::Error::Database(db_err) => {
                 (StatusCode::CONFLICT, Json(db_err.to_string())).into_response()
             }
+            sqlx::Error::RowNotFound => {
+                StatusCode::NOT_FOUND.into_response()
+            }
             _ => StatusCode::INTERNAL_SERVER_ERROR.into_response(),
         },
     }
@@ -80,8 +83,11 @@ pub async fn delete(
         Ok(..) => StatusCode::OK.into_response(),
         Err(error) => match error {
             sqlx::Error::Database(db_err) => {
-                (StatusCode::NOT_FOUND, Json(db_err.to_string()))
+                (StatusCode::CONFLICT, Json(db_err.to_string()))
                     .into_response()
+            }
+            sqlx::Error::RowNotFound => {
+                StatusCode::NOT_FOUND.into_response()
             }
             _ => StatusCode::INTERNAL_SERVER_ERROR.into_response(),
         },
