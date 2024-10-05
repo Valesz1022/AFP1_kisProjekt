@@ -4,8 +4,10 @@ use std::{io, sync::Arc};
 
 use axum::{
     extract::Request,
+    http::StatusCode,
     middleware::{self, Next},
     response::IntoResponse,
+    Json,
 };
 use axum_login::{
     login_required, permission_required,
@@ -13,6 +15,7 @@ use axum_login::{
     AuthManagerLayerBuilder,
 };
 use configuration::Settings;
+use serde_json::json;
 use sqlx::{mysql::MySqlPoolOptions, MySqlPool};
 use thiserror::Error;
 use time::Duration;
@@ -138,7 +141,8 @@ impl Application {
                 },
             ))
             .layer(middleware::from_fn(add_cors))
-            .with_state(app_state);
+            .with_state(app_state)
+            .fallback(Self::fallback_handler);
 
         let listener = {
             let address = format!(
@@ -168,6 +172,15 @@ impl Application {
         deletion_task.await??;
 
         Ok(())
+    }
+
+    async fn fallback_handler() -> (StatusCode, Json<serde_json::Value>) {
+        (
+            StatusCode::NOT_FOUND,
+            Json(json!({
+                "error": "Endpoint not found"
+            })),
+        )
     }
 
     /// A megkapott szál-leállító értéket meghívja, ha olyan jelet kap, amely
