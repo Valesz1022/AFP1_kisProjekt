@@ -25,7 +25,7 @@ use tokio::{
     task::{self, AbortHandle, JoinError},
 };
 use tower_http::trace::TraceLayer;
-use tower_sessions::{cookie::Key, session_store};
+use tower_sessions::{cookie::{Key, SameSite}, session_store};
 use tower_sessions_sqlx_store::MySqlStore;
 use tracing::{debug, span, Level};
 use users::Backend;
@@ -110,7 +110,8 @@ impl Application {
         let session_layer = SessionManagerLayer::new(session_store)
             .with_secure(false)
             .with_expiry(Expiry::OnInactivity(Duration::days(1)))
-            .with_signed(key);
+            .with_signed(key)
+            .with_same_site(SameSite::None);
 
         let backend = Backend::new(connection_pool.clone());
         let auth_layer =
