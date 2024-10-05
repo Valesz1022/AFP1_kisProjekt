@@ -108,7 +108,7 @@ impl Application {
         let key = Key::generate();
 
         let session_layer = SessionManagerLayer::new(session_store)
-            .with_secure(false)
+            .with_secure(true)
             .with_expiry(Expiry::OnInactivity(Duration::days(1)))
             .with_signed(key)
             .with_same_site(SameSite::None);
