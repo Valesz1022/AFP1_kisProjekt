@@ -227,12 +227,14 @@ impl Application {
 /// Nem a legbiztonságosabb, hiszen így minden domain ténylegesen minden headert
 /// felküldhet, de sajnos más megoldás most nincs, mivel a frontend nem fut fix
 /// IP címen.
+/// Publikus, mivel Debianon hostoljuk, és van pár hiba linkerrel.
 ///
 /// # Panics
-/// Használja unwrap() metódust, tehát tudna panicelni, viszont ez csak abban
+/// Használja `unwrap()` metódust, tehát tudna panicelni, viszont ez csak abban
 /// az esetben fut hibára, ha a CORS specifikáció megváltozik, és az
-/// Access-Control-Allow-Origin vagy az Access-Control-Allow-Headers nem 
+/// Access-Control-Allow-Origin vagy az Access-Control-Allow-Headers nem
 /// lehet *, vagy a HTTP státuszkódok megváltoznak.
+#[doc(hidden)]
 pub async fn add_cors(request: Request, next: Next) -> impl IntoResponse {
     let mut response = next.run(request).await;
 
