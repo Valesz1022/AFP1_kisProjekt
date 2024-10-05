@@ -174,6 +174,12 @@ impl Application {
         Ok(())
     }
 
+    /// Akkor használjuk, ha egy olyan kérés érkezik, amelyet a router nem
+    /// tud hozzákötni semmilyen handlerhöz. Ilyenkor a router fallback-ként
+    /// (visszaesésként) meghívja ezt a függvényt.
+    /// `Axum` már alapvetően csinál egy ilyet, de az nem megfelelő nekünk,
+    /// mivel nem JSON formátumban küldi a válasz törzsét, mi pedig abban
+    /// szeretnénk.
     async fn fallback_handler() -> (StatusCode, Json<serde_json::Value>) {
         (
             StatusCode::NOT_FOUND,
@@ -223,9 +229,10 @@ impl Application {
 /// IP címen.
 ///
 /// # Panics
-/// Uses unwrap, but never panics, unless CORS specification changes, and
-/// doesn't allow * for Access-Control-Allow-Origin and 
-/// Access-Control-Allow-Headers or the HTTP status codes change.
+/// Használja unwrap() metódust, tehát tudna panicelni, viszont ez csak abban
+/// az esetben fut hibára, ha a CORS specifikáció megváltozik, és az
+/// Access-Control-Allow-Origin vagy az Access-Control-Allow-Headers nem 
+/// lehet *, vagy a HTTP státuszkódok megváltoznak.
 pub async fn add_cors(request: Request, next: Next) -> impl IntoResponse {
     let mut response = next.run(request).await;
 
