@@ -5,6 +5,7 @@ use std::{io, sync::Arc};
 use axum::{
     extract::Request,
     middleware::{self, Next},
+    response::IntoResponse,
 };
 use axum_login::{
     login_required, permission_required,
@@ -207,7 +208,7 @@ impl Application {
 /// Nem a legbiztonságosabb, hiszen így minden domain ténylegesen minden headert
 /// felküldhet, de sajnos más megoldás most nincs, mivel a frontend nem fut fix
 /// IP címen.
-async fn add_cors(request: Request, next: Next) {
+pub async fn add_cors(request: Request, next: Next) -> impl IntoResponse {
     let mut response = next.run(request).await;
 
     response
@@ -216,4 +217,6 @@ async fn add_cors(request: Request, next: Next) {
     response
         .headers_mut()
         .append("Access-Control-Allow-Headers", "*".try_into().unwrap());
+
+    response
 }
