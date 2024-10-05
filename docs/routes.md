@@ -131,6 +131,9 @@ Törzs: nincs
 #### 404 Not Found (nem található)
 Jelentés: Nincs ilyen azonosító az adatbázisban.\
 Törzs: Hibaüzenet.
+#### 409 Conflict (foglalt)
+Jelentés: Nincs ilyen felhasználó vagy vicc az adatbázisban.\
+Törzs: Hibaüzenet.
 #### 422 Unprocessable Entity (feldolgozhatatlan egység)
 Jelentés: Hibás kérés paraméterek.\
 Törzs: nincs
@@ -150,6 +153,9 @@ Törzs: nincs
 #### 401 Unauthorized (jogosulatlan hozzáférés)
 Jelentés: Nincs bejelentkezve felhasználó.\
 Törzs: nincs
+#### 404 Not Found (nem található)
+Jelentés: Nincs ilyen azonosító az adatbázisban.\
+Törzs: Hibaüzenet.
 #### 409 Conflict (foglalt)
 Jelentés: Nincs ilyen azonosító az adatbázisban, vagy erre még nem szavazott
 a felhasználó.\
@@ -172,6 +178,9 @@ Törzs: nincs
 #### 401 Unauthorized (jogosulatlan hozzáférés)
 Jelentés: Nincs bejelentkezve felhasználó.\
 Törzs: nincs
+#### 404 Not Found (nem található)
+Jelentés: Nincs ilyen azonosító az adatbázisban.\
+Törzs: Hibaüzenet.
 #### 409 Conflict (foglalt)
 Jelentés: Nincs ilyen azonosító az adatbázisban, vagy erre még nem szavazott
 a felhasználó.\
@@ -218,7 +227,10 @@ Törzs: nincs
 Jelentés: Nincs bejelentkezve felhasználó.\
 Törzs: nincs
 #### 404 Not Found
-Jelentés: Nincs ilyen felhasználó vagy poszt az adatbázisban.\
+Jelentés: Nincs ilyen poszt az adatbázisban.\
+Törzs: Hibaüzenet.
+#### 409 Conflict (foglalt)
+Jelentés: Nincs ilyen felhasználó az adatbázisban.\
 Törzs: Hibaüzenet.
 #### 422 Unprocessable Entity (feldolgozhatatlan egység)
 Jelentés: Hibás kérés paraméterek.\
@@ -239,8 +251,11 @@ Törzs: nincs
 Jelentés: Nincs bejelentkezve felhasználó.\
 Törzs: nincs
 #### 404 Not Found
-Jelentés: Nincs ilyen felhasználó vagy poszt az adatbázisban, vagy nincs neki
-ez a poszt elmentve.\
+Jelentés: Nincs ilyen poszt az adatbázisban.
+Törzs: Hibaüzenet.
+#### 409 Conflict (foglalt)
+Jelentés: Nincs ilyen felhasználó az adatbázisban, vagy a felhasználónak nincs 
+elmentve.\
 Törzs: Hibaüzenet.
 #### 422 Unprocessable Entity (feldolgozhatatlan egység)
 Jelentés: Hibás kérés paraméterek.\
