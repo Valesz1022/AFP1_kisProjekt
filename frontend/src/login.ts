@@ -28,23 +28,28 @@ window.addEventListener('load', () => {
 
 async function sendLoginInfo(username: string, password: string) {
     let response = await fetch(`${SERVER}/login?name=${username}&password=${password}`, {
-        method: "POST"
+        method: "POST",
+        credentials: "include"
     });
 
     switch (response.status) {
+        
         case 200:
             localStorage.setItem('globalUsername', username);
             localStorage.setItem('globalPassword', password);
-            if (username == "admin") {
+            if (username == "asd") {
                 window.api.load_main_page_admin();
             }
             else {
                 window.api.load_main_page_user();
             }
+            break;
         case 401:
             console.log("Sikertelen bejelentkezés valamilyen hiba miatt");
+            break;
         case 500:
             console.log(" Sikertelen bejelentkezés szerveroldali hiba miatt");
+            break;
     }
 }
 

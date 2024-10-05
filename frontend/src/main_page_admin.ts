@@ -16,16 +16,15 @@ window.addEventListener('load', () => {
         new_post_button: document.getElementById('new_post_button') as HTMLButtonElement,
         logout_button: document.getElementById('logout_button') as HTMLButtonElement
     }
-    reLogin(localStorage.getItem('globalUsername'), localStorage.getItem('globalPassword'));
 
     //viccek betöltése
     get_jokes();
 
     //kijelentkezés funkció
     main_page_admin_elements.logout_button.addEventListener('click', () => {
+        logout();
         sessionStorage.removeItem('isLoggedIn');
         localStorage.removeItem('globalUsername');
-        logout();
     })
 
     //Új vicc oldal
@@ -36,7 +35,7 @@ window.addEventListener('load', () => {
 
 })
 
-async function referesh_vote_count(joke_id: string) {
+async function refresh_vote_count(joke_id: string) {
     let response = await fetch(`${SERVER}/votes?name=${localStorage.getItem("globalUsername")}joke_id=${joke_id}`, {
         method: "GET"
     });
@@ -61,14 +60,17 @@ async function referesh_vote_count(joke_id: string) {
 async function up_vote_joke(joke_id: string) {
     let response = await fetch(`${SERVER}/votes?name=${localStorage.getItem("globalUsername")}&joke_id=${joke_id}&vote=1`, {
         method: "POST"
+        
     });
+
+    console.log(response.body);
 
     switch (response.status) {
         case 201:
             console.log("sikeres szavazás");
             let upvote_button = document.getElementsByName(`${joke_id}_upvote`)[0] as HTMLIFrameElement;
             upvote_button.classList.add('voted');
-            referesh_vote_count(joke_id);
+            refresh_vote_count(joke_id);
             break;
         case 401:
             console.log("Nincs bejelentkezve");
@@ -88,7 +90,8 @@ async function up_vote_joke(joke_id: string) {
 
 async function down_vote_joke(joke_id: string) {
     let response = await fetch(`${SERVER}/votes?name=${localStorage.getItem("globalUsername")}&joke_id=${joke_id}&vote=-1`, {
-        method: "POST"
+        method: "POST",
+        credentials: "include"
     });
 
     switch (response.status) {
@@ -96,7 +99,7 @@ async function down_vote_joke(joke_id: string) {
             console.log("sikeres szavazás");
             let down_vote_button = document.getElementsByName(`${joke_id}_downvote`)[0] as HTMLIFrameElement;
             down_vote_button.classList.add('voted');
-            referesh_vote_count(joke_id);
+            refresh_vote_count(joke_id);
             break;
         case 401:
             console.log("Nincs bejelentkezve");
@@ -115,7 +118,8 @@ async function down_vote_joke(joke_id: string) {
 
 async function delete_vote(joke_id: string) {
     let response = await fetch(`${SERVER}/votes?name=${localStorage.getItem("globalUsername")}&joke_id=${joke_id}`, {
-        method: "DELETE"
+        method: "DELETE",
+        credentials: "include"
     });
 
     switch (response.status) {
@@ -123,7 +127,7 @@ async function delete_vote(joke_id: string) {
             let up_vote_button = document.getElementsByName(`${joke_id}_upvote`)[0] as HTMLButtonElement;
             up_vote_button.classList.remove('voted');
             console.log("Szavazás törölve");
-            referesh_vote_count(joke_id);
+            refresh_vote_count(joke_id);
             break;
         case 401:
             console.log("Nincs bejelentkezve a felhasználó");
@@ -143,7 +147,8 @@ async function delete_vote(joke_id: string) {
 
 async function change_vote(joke_id: string, vote: string) {
     let response = await fetch(`${SERVER}/jokes?name=${localStorage.getItem("globalUsername")}&joke_id=${joke_id}&vote=${vote}`, {
-        method: "PUT"
+        method: "PUT",
+        credentials: "include"
     });
 
     switch (response.status) {
@@ -160,7 +165,7 @@ async function change_vote(joke_id: string, vote: string) {
                 down_vote_button.classList.add('voted');
                 console.log("Szavazat módosítva downvote-ra");
             }
-            referesh_vote_count(joke_id);
+            refresh_vote_count(joke_id);
             break;
         case 401:
             console.log("Nincs bejelentkezve a felhasználó");
@@ -344,7 +349,8 @@ async function get_jokes() {
 
 async function logout() {
     let response = await fetch(`${SERVER}/logout`, {
-        method: "GET"
+        method: "GET",
+        credentials: "include"
     });
 
     switch (response.status) {
@@ -363,7 +369,8 @@ async function logout() {
 
 async function delete_joke(id: string) {
     let response = await fetch(`${SERVER}/jokes?id=${id}`, {
-        method: "DELETE"
+        method: "DELETE",
+        credentials: "include"
     });
 
     console.log(response.status);
@@ -386,18 +393,6 @@ async function delete_joke(id: string) {
             break;
         case 500:
             console.log("Valami hiba történt a szerveren.");
-            break;
-    }
-}
-
-async function reLogin(username: string | null, password: string | null) {
-    let response = await fetch(`${SERVER}/login?name=${username}&password=${password}`, {
-        method: "POST"
-    });
-
-    switch (response.status) {
-        case 200:
-            console.log("újra bejelentkezve");
             break;
     }
 }

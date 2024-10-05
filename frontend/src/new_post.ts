@@ -14,10 +14,9 @@ window.addEventListener('load', () => {
         post_joke_button: document.getElementById('post_joke') as HTMLButtonElement,
         user_name: localStorage.getItem('globalUsername') as string
     }
-    reLogin2(localStorage.getItem('globalUsername'), localStorage.getItem('globalPassword'));
 
     new_post_elements.back_button.addEventListener('click', () => {
-        if (new_post_elements.user_name == "admin") {
+        if (new_post_elements.user_name == "asd") {
             window.api.load_main_page_admin();
         }
         else {
@@ -32,7 +31,11 @@ window.addEventListener('load', () => {
 })
 
 async function post_joke(username: string, content: string) {
-    let response = await fetch(`${SERVER}/jokes?user_name=${username}&content=${content}`, {
+    let url = `${SERVER}/jokes?name=${username}&content=${content}`;
+
+    let request = new Request(url, { credentials: "include" });
+
+    let response = await fetch(request, {
         method: "POST"
     });
 
@@ -51,17 +54,5 @@ async function post_joke(username: string, content: string) {
             break;
         case 500:
             console.log("Valami hiba történt a szerveren.");
-    }
-}
-
-async function reLogin2(username: string | null, password: string | null) {
-    let response = await fetch(`${SERVER}/login?name=${username}&password=${password}`, {
-        method: "POST"
-    });
-
-    switch (response.status) {
-        case 200:
-            console.log("újra bejelentkezve");
-            break;
     }
 }
