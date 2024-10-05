@@ -221,6 +221,11 @@ impl Application {
 /// Nem a legbiztonságosabb, hiszen így minden domain ténylegesen minden headert
 /// felküldhet, de sajnos más megoldás most nincs, mivel a frontend nem fut fix
 /// IP címen.
+///
+/// # Panics
+/// Uses unwrap, but never panics, unless CORS specification changes, and
+/// doesn't allow * for Access-Control-Allow-Origin and 
+/// Access-Control-Allow-Headers or the HTTP status codes change.
 pub async fn add_cors(request: Request, next: Next) -> impl IntoResponse {
     let mut response = next.run(request).await;
 
@@ -230,6 +235,11 @@ pub async fn add_cors(request: Request, next: Next) -> impl IntoResponse {
     response
         .headers_mut()
         .append("Access-Control-Allow-Headers", "*".try_into().unwrap());
+
+    response.headers_mut().append(
+        "Access-Control-Allow-Methods",
+        "GET, POST, PUT, DELETE, OPTIONS".try_into().unwrap(),
+    );
 
     response
 }
