@@ -10,6 +10,7 @@ app.on('ready', () => {
         },
         autoHideMenuBar: true
     });
+    window.maximize();
     window.loadFile(path.join(app.getAppPath(), 'html/index.html'));
     window.webContents.openDevTools();
 });
