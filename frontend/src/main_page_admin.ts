@@ -40,13 +40,17 @@ async function refresh_vote_count(joke_id: string) {
         method: "GET"
     });
 
-    let number = await response.json();
+    let number: Types.Vote = await response.json();
+    console.log("A szavazat lekérése: " + number + number.vote);
+    console.log(number.vote);
 
     switch (response.status) {
         case 200:
-            let upvote_number_p = document.getElementsByName(`${joke_id}_number`)[0] as HTMLTextAreaElement;
-            upvote_number_p.value = number;
-            console.log("szavazat szám frissítve");
+            let upvote_number_p = document.getElementsByName(`${joke_id}_vote_number`)[0] as HTMLParagraphElement;
+            if (upvote_number_p) {
+                upvote_number_p.textContent = number.vote.toString();
+                console.log("szavazat szám frissítve");
+            }
             break;
         case 422:
             console.log("Hibás paraméterek");
@@ -125,7 +129,9 @@ async function delete_vote(joke_id: string) {
     switch (response.status) {
         case 200:
             let up_vote_button = document.getElementsByName(`${joke_id}_upvote`)[0] as HTMLButtonElement;
+            let down_vote_button = document.getElementsByName(`${joke_id}_downvote`)[0] as HTMLButtonElement;
             up_vote_button.classList.remove('voted');
+            down_vote_button.classList.remove('voted');
             console.log("Szavazás törölve");
             refresh_vote_count(joke_id);
             break;
@@ -285,6 +291,8 @@ async function get_jokes() {
                 post.appendChild(post_right);
 
                 main_page_admin_elements.posts_container.appendChild(post);
+
+                apply_voted(localStorage.getItem('globalUsername'), joke.id);
             });
 
             //vicc törlése
@@ -397,5 +405,22 @@ async function delete_joke(id: string) {
         case 500:
             console.log("Valami hiba történt a szerveren.");
             break;
+    }
+}
+
+async function apply_voted(name: string | null, joke_id: number) {
+    let response = await fetch(`${SERVER}/votes?name=${name}&joke_id=${joke_id}`, {
+        method: "GET",
+        credentials: "include"
+    });
+
+    let vote: Types.Vote = await response.json();
+    if (vote.vote == 1) {
+        let up_vote_button = document.getElementsByName(`${joke_id}_upvote`)[0] as HTMLButtonElement;
+        up_vote_button.classList.add('voted');
+    }
+    if (vote.vote == -1) {
+        let down_vote_button = document.getElementsByName(`${joke_id}_downvote`)[0] as HTMLButtonElement;
+        down_vote_button.classList.add('voted');
     }
 }

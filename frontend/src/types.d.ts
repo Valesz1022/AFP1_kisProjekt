@@ -5,4 +5,8 @@ declare namespace Types {
         content: string;
         votes: number;
     }
+    
+    interface Vote{
+        vote: number;
+    }
 }
