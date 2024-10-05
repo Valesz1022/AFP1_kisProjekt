@@ -3,7 +3,7 @@ Tesztelést végezte: Molnár Máté Norbert\
 Operációs Rendszer: Arch Linux 6.10.10\
 Böngésző: Firefox\
 Dátum: 2024. 10. 05.\
-Talált hibák száma: 
+Talált hibák száma: 1
 
 # Hitelesítése funkciók tesztelése
 - Elindítottam a szervert, illetve az adatbázist.
