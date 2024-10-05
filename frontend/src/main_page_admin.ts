@@ -36,7 +36,7 @@ window.addEventListener('load', () => {
 })
 
 async function refresh_vote_count(joke_id: string) {
-    let response = await fetch(`${SERVER}/votes?name=${localStorage.getItem("globalUsername")}joke_id=${joke_id}`, {
+    let response = await fetch(`${SERVER}/votes?name=${localStorage.getItem("globalUsername")}&joke_id=${joke_id}`, {
         method: "GET"
     });
 
@@ -59,8 +59,8 @@ async function refresh_vote_count(joke_id: string) {
 
 async function up_vote_joke(joke_id: string) {
     let response = await fetch(`${SERVER}/votes?name=${localStorage.getItem("globalUsername")}&joke_id=${joke_id}&vote=1`, {
-        method: "POST"
-        
+        method: "POST",
+        credentials: "include"
     });
 
     console.log(response.body);
@@ -89,7 +89,7 @@ async function up_vote_joke(joke_id: string) {
 }
 
 async function down_vote_joke(joke_id: string) {
-    let response = await fetch(`${SERVER}/votes?name=${localStorage.getItem("globalUsername")}&joke_id=${joke_id}&vote=-1`, {
+    let response = await fetch(`${SERVER}/votes?name=${localStorage.getItem("globalUsername")}&joke_id=${joke_id}&vote=${-1}`, {
         method: "POST",
         credentials: "include"
     });
@@ -327,14 +327,17 @@ async function get_jokes() {
             Array.from(main_page_admin_elements.down_vote_buttons).forEach((down_vote_button) => {
                 down_vote_button.addEventListener('click', () => {
                     let joke_id = down_vote_button.getAttribute('id');
+                    let up_vote_button = document.getElementsByName(`${joke_id}_upvote`)[0] as HTMLButtonElement;
                     if (joke_id) {
                         if (down_vote_button.classList.contains('voted')) {
+                            console.log("Szavazás törlés próba");
                             delete_vote(joke_id);
-                        } else if (down_vote_button.classList.contains('voted')) {
+                        } else if (up_vote_button.classList.contains('voted')) {
+                            console.log("szavazás változtat próba");
                             change_vote(joke_id, '-1');
                         }
                         else {
-                            up_vote_joke(joke_id);
+                            down_vote_joke(joke_id);
                             console.log("szavazás próba");
                         }
                     }
