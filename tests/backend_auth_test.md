@@ -1,9 +1,9 @@
 # Backend hitelesítés és jogosultságok tesztelése
 Tesztelést végezte: Molnár Máté Norbert\
-Operációs Rendszer: Arch Linux 6.10.10\
+Operációs Rendszer: Arch Linux 6.11.1\
 Böngésző: Firefox\
 Dátum: 2024. 10. 05.\
-Talált hibák száma: 1
+Talált hibák száma: 0
 
 # Hitelesítése funkciók tesztelése
 - Elindítottam a szervert, illetve az adatbázist.
