@@ -16,7 +16,7 @@ window.addEventListener('load', () => {
     }
 
     new_post_elements.back_button.addEventListener('click', () => {
-        if (localStorage.getItem('globalIsAdmin') == "1") {
+        if (localStorage.getItem('globalIsAdmin')) {
             window.api.load_main_page_admin();
         }
         else {
