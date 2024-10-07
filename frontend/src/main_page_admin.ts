@@ -23,8 +23,7 @@ window.addEventListener('load', () => {
     //kijelentkezés funkció
     main_page_admin_elements.logout_button.addEventListener('click', () => {
         logout();
-        sessionStorage.removeItem('isLoggedIn');
-        localStorage.removeItem('globalUsername');
+        localStorage.clear();
     })
 
     //Új vicc oldal

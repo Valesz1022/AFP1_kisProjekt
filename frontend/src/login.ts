@@ -32,12 +32,15 @@ async function sendLoginInfo(username: string, password: string) {
         credentials: "include"
     });
 
+    let user : Types.user = await response.json();
+    
     switch (response.status) {
         
         case 200:
-            localStorage.setItem('globalUsername', username);
+            localStorage.setItem('globalUsername', user.username);
             localStorage.setItem('globalPassword', password);
-            if (username == "asd") {
+            localStorage.setItem('globalIsAdmin', user.admin);
+            if (user.admin == "1") {
                 window.api.load_main_page_admin();
             }
             else {

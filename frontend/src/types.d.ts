@@ -9,4 +9,9 @@ declare namespace Types {
     interface Vote{
         vote: number;
     }
+
+    interface user{
+        username: string;
+        admin: string;
+    }
 }
