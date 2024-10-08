@@ -154,7 +154,175 @@ async function change_vote2(joke_id: string, vote: string) {
     }
 }
 
+async function get_jokes2() {
+    console.log("viccek lekérése");
+    let response = await fetch(`${SERVER}/jokes`, {
+        method: "GET"
+    });
 
+    let jokes = await response.json();
+    console.log("megjöttek a viccek" + response.status);
+
+    switch (response.status) {
+        case 200:
+            console.log("sikeres lekérés");
+            jokes.forEach((joke: Types.Joke) => {
+                console.log(joke);
+
+                //a divek létrehozása és appendelése a main_page_user.html alapján
+                let post = document.createElement('div');
+                post.classList.add('post');
+
+                let post_left = document.createElement('div');
+                post_left.classList.add('post_left');
+
+                let post_left_top = document.createElement('div');
+                post_left_top.classList.add('post_left_top');
+
+                let post_left_top_left = document.createElement('div');
+                post_left_top_left.classList.add('post_left_top_left');
+
+                let post_username = document.createElement('p');
+                post_username.classList.add('post_username');
+                post_username.textContent = joke.user_name;
+
+                //jelenleg nincs tárolva a header az adatb-ben -> joke id
+                let post_title = document.createElement('p');
+                post_title.classList.add('post_title');
+                post_title.textContent = joke.id.toString();
+
+                post_left_top_left.appendChild(post_username);
+                post_left_top_left.appendChild(post_title);
+
+                let post_left_top_right = document.createElement('div');
+                post_left_top_right.classList.add('post_left_top_right');
+                post_left_top_right.id = 'delete_img';
+
+                let delete_img = document.createElement('i');
+                delete_img.classList.add('fa-solid', 'fa-trash', 'fa-2x');
+                delete_img.setAttribute('id', `${joke.id}`);
+                delete_img.setAttribute('name', `${joke.id}_delete`);
+
+                post_left_top.appendChild(post_left_top_left);
+                post_left_top.appendChild(post_left_top_right);
+                post_left_top_right.appendChild(delete_img);
+
+                let post_left_bottom = document.createElement('div');
+                post_left_bottom.classList.add('post_left_bottom');
+
+
+                let post_content = document.createElement('p');
+                post_content.classList.add('post_content');
+                post_content.textContent = joke.content;
+
+                post_left_bottom.appendChild(post_content);
+
+                post_left.appendChild(post_left_top);
+                post_left.appendChild(post_left_bottom);
+
+
+                let post_right = document.createElement('div');
+                post_right.classList.add('post_right');
+
+
+                let up_vote = document.createElement('div');
+                up_vote.classList.add('up_vote');
+                let up_vote_icon = document.createElement('i');
+                up_vote_icon.classList.add('fa-solid', 'fa-arrow-up', 'fa-2x');
+                up_vote_icon.setAttribute('id', `${joke.id}`);
+                up_vote_icon.setAttribute('name', `${joke.id}_upvote`);
+                up_vote.appendChild(up_vote_icon);
+
+                let vote_number = document.createElement('div');
+                let number = document.createElement('p');
+                number.textContent = joke.votes.toString();
+                number.setAttribute('id', `${joke.id}`);
+                number.setAttribute('name', `${joke.id}_vote_number`);
+                vote_number.appendChild(number);
+
+
+                let down_vote = document.createElement('div');
+                down_vote.classList.add('down_vote');
+                let down_vote_icon = document.createElement('i');
+                down_vote_icon.classList.add('fa-solid', 'fa-arrow-down', 'fa-2x');
+                down_vote_icon.setAttribute('id', `${joke.id}`);
+                down_vote_icon.setAttribute('name', `${joke.id}_downvote`);
+                down_vote.appendChild(down_vote_icon);
+
+                post_right.appendChild(up_vote);
+                post_right.appendChild(vote_number);
+                post_right.appendChild(down_vote);
+
+                post.appendChild(post_left);
+                post.appendChild(post_right);
+
+                main_page_admin_elements.posts_container.appendChild(post);
+
+                apply_voted(localStorage.getItem('globalUsername'), joke.id);
+            });
+
+            //vicc törlése
+
+            Array.from(main_page_admin_elements.delete_buttons).forEach((delete_button) => {
+
+                delete_button.addEventListener('click', () => {
+                    let joke_id = delete_button.getAttribute('name');
+                    if (joke_id) {
+                        delete_joke(joke_id);
+                        console.log("törlés próba");
+                    }
+                    else {
+                        console.log(joke_id);
+                    }
+                })
+            })
+
+            //vicc upvote
+            Array.from(main_page_admin_elements.up_vote_buttons).forEach((up_vote_button) => {
+                up_vote_button.addEventListener('click', () => {
+                    let joke_id = up_vote_button.getAttribute('id');
+                    let down_vote_button = document.getElementsByName(`${joke_id}_downvote`)[0] as HTMLButtonElement;
+                    if (joke_id) {
+                        if (up_vote_button.classList.contains('voted')) {
+                            delete_vote(joke_id);
+                        } else if (down_vote_button.classList.contains('voted')) {
+                            change_vote(joke_id, '1');
+                        }
+                        else {
+                            up_vote_joke(joke_id);
+                            console.log("szavazás próba");
+                        }
+
+                    }
+                })
+            })
+
+            //vicc downvote
+            Array.from(main_page_admin_elements.down_vote_buttons).forEach((down_vote_button) => {
+                down_vote_button.addEventListener('click', () => {
+                    let joke_id = down_vote_button.getAttribute('id');
+                    let up_vote_button = document.getElementsByName(`${joke_id}_upvote`)[0] as HTMLButtonElement;
+                    if (joke_id) {
+                        if (down_vote_button.classList.contains('voted')) {
+                            console.log("Szavazás törlés próba");
+                            delete_vote(joke_id);
+                        } else if (up_vote_button.classList.contains('voted')) {
+                            console.log("szavazás változtat próba");
+                            change_vote(joke_id, '-1');
+                        }
+                        else {
+                            down_vote_joke(joke_id);
+                            console.log("szavazás próba");
+                        }
+                    }
+                })
+            })
+            break;
+        case 500:
+            console.log("Hiba történt");
+            break;
+    }
+}
 
 async function logout2() {
     let response = await fetch(`${SERVER}/logout`, {
