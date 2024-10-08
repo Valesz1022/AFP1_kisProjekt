@@ -8,6 +8,7 @@
         script-src 'self' 'unsafe-inline' https://kit.fontawesome.com/b2454de67f.js;">
         <script src="https://kit.fontawesome.com/b2454de67f.js" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="../css/main_page_user.css">
+        <script src="../dist/main_page_user.js"></script>
     </head>
     <body>
         <div class="container">
@@ -15,7 +16,7 @@
                 <h1>Vicc-explorer</h1>
                 <div class="nav_buttons">
                     <button class="profil_button">Profil</button>
-                    <button class="logout_button">Kijelentkezés</button>
+                    <button class="logout_button" id="logout_button">Kijelentkezés</button>
                 </div>
             </div>
             <div class="body" id="login_body">
@@ -31,24 +32,24 @@
                                 <div class="post_left_top_right" id="delete_img"></div>
                             </div>
                             <div class="post_left_bottom">
-                                <p class="post_content">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Optio, harum cupiditate laudantium accusamus atque similique exercitationem quam, excepturi qui obcaecati veniam ea? Animi eaque dignissimos ut consequuntur nihil officiis commodi.</p>
+                                <p class="post_content" id="posts_container">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Optio, harum cupiditate laudantium accusamus atque similique exercitationem quam, excepturi qui obcaecati veniam ea? Animi eaque dignissimos ut consequuntur nihil officiis commodi.</p>
                             </div>
                         </div>
                         <div class="post_right">
-                            <div class="up_vote">
+                            <div class="up_vote" id="fa-arrow-up">
                                 <i class="fa-solid fa-arrow-up fa-2x"></i>
                             </div>
                             <div class="vote_number">
                                 <p>0</p>
                             </div>
-                            <div class="down_vote">
+                            <div class="down_vote" id="fa-arrow-down">
                                 <i class="fa-solid fa-arrow-down fa-2x"></i>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="new_post_button">
-                    <i class="fa-solid fa-circle-plus fa-3x"></i>
+                    <i class="fa-solid fa-circle-plus fa-3x" id="new_post_button"></i>
                 </div>
             </div>
         </div>

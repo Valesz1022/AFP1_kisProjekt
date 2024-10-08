@@ -66,7 +66,7 @@ async function sendUser() {
             console.log("Sikeres regisztráció!");
             break;
         case 409:
-            hibak.push("Már van ilyen felhasználó!");
+            console.log("Már van ilyen felhasználó");
             break;
     }
 }
