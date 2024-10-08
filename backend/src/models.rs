@@ -12,6 +12,11 @@ pub struct Joke {
 }
 
 #[derive(Deserialize, Serialize, FromRow)]
+pub struct Vote {
+    pub vote: i32,
+}
+
+#[derive(Deserialize, Serialize, FromRow)]
 pub struct Saved {
     pub user_name: String,
     pub joke_id: i32,

@@ -2,13 +2,20 @@
 
 use std::{io, sync::Arc};
 
-use axum::extract::Request;
+use axum::{
+    extract::Request,
+    http::StatusCode,
+    middleware::{self, Next},
+    response::IntoResponse,
+    Json,
+};
 use axum_login::{
     login_required, permission_required,
     tower_sessions::{ExpiredDeletion, Expiry, SessionManagerLayer},
     AuthManagerLayerBuilder,
 };
 use configuration::Settings;
+use serde_json::json;
 use sqlx::{mysql::MySqlPoolOptions, MySqlPool};
 use thiserror::Error;
 use time::Duration;
@@ -18,7 +25,7 @@ use tokio::{
     task::{self, AbortHandle, JoinError},
 };
 use tower_http::trace::TraceLayer;
-use tower_sessions::{cookie::Key, session_store};
+use tower_sessions::{cookie::{Key, SameSite}, session_store};
 use tower_sessions_sqlx_store::MySqlStore;
 use tracing::{debug, span, Level};
 use users::Backend;
@@ -101,9 +108,10 @@ impl Application {
         let key = Key::generate();
 
         let session_layer = SessionManagerLayer::new(session_store)
-            .with_secure(false)
+            .with_secure(true)
             .with_expiry(Expiry::OnInactivity(Duration::days(1)))
-            .with_signed(key);
+            .with_signed(key)
+            .with_same_site(SameSite::None);
 
         let backend = Backend::new(connection_pool.clone());
         let auth_layer =
@@ -133,7 +141,9 @@ impl Application {
                     }
                 },
             ))
-            .with_state(app_state);
+            .layer(middleware::from_fn(add_cors))
+            .with_state(app_state)
+            .fallback(Self::fallback_handler);
 
         let listener = {
             let address = format!(
@@ -163,6 +173,21 @@ impl Application {
         deletion_task.await??;
 
         Ok(())
+    }
+
+    /// Akkor használjuk, ha egy olyan kérés érkezik, amelyet a router nem
+    /// tud hozzákötni semmilyen handlerhöz. Ilyenkor a router fallback-ként
+    /// (visszaesésként) meghívja ezt a függvényt.
+    /// `Axum` már alapvetően csinál egy ilyet, de az nem megfelelő nekünk,
+    /// mivel nem JSON formátumban küldi a válasz törzsét, mi pedig abban
+    /// szeretnénk.
+    async fn fallback_handler() -> (StatusCode, Json<serde_json::Value>) {
+        (
+            StatusCode::NOT_FOUND,
+            Json(json!({
+                "error": "Endpoint not found"
+            })),
+        )
     }
 
     /// A megkapott szál-leállító értéket meghívja, ha olyan jelet kap, amely
@@ -196,4 +221,35 @@ impl Application {
             _ = terminate => { deletion_task_abort_handle.abort() },
         }
     }
+}
+
+/// A CORS miatt engedélyezni kell minden domainről kéréseket, illetve minden
+/// headert a kérésekben.
+/// Nem a legbiztonságosabb, hiszen így minden domain ténylegesen minden headert
+/// felküldhet, de sajnos más megoldás most nincs, mivel a frontend nem fut fix
+/// IP címen.
+/// Publikus, mivel Debianon hostoljuk, és van pár hiba linkerrel.
+///
+/// # Panics
+/// Használja `unwrap()` metódust, tehát tudna panicelni, viszont ez csak abban
+/// az esetben fut hibára, ha a CORS specifikáció megváltozik, és az
+/// Access-Control-Allow-Origin vagy az Access-Control-Allow-Headers nem
+/// lehet *, vagy a HTTP státuszkódok megváltoznak.
+#[doc(hidden)]
+pub async fn add_cors(request: Request, next: Next) -> impl IntoResponse {
+    let mut response = next.run(request).await;
+
+    response
+        .headers_mut()
+        .append("Access-Control-Allow-Origin", "*".try_into().unwrap());
+    response
+        .headers_mut()
+        .append("Access-Control-Allow-Headers", "*".try_into().unwrap());
+
+    response.headers_mut().append(
+        "Access-Control-Allow-Methods",
+        "GET, POST, PUT, DELETE, OPTIONS".try_into().unwrap(),
+    );
+
+    response
 }

@@ -59,8 +59,10 @@ h1 {
     background-color: #e53935;
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
     padding: 10px;
-    border-radius: 5px;;
+    border-radius: 5px;
+    margin-bottom: 10px;
 }
 
 .post_left_top{
@@ -88,6 +90,10 @@ h1 {
 .post_right i{
     margin-top: auto;
     display: flex;
+}
+
+.voted{
+    color: #f3cb23;
 }
 
 .new_post_button {

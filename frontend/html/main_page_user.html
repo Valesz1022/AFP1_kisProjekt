@@ -4,6 +4,8 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Vicc Explorer</title>
+        <meta http-equiv="Content-Security-Policy" content="
+        script-src 'self' 'unsafe-inline' https://kit.fontawesome.com/b2454de67f.js;">
         <script src="https://kit.fontawesome.com/b2454de67f.js" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="../css/main_page_user.css">
     </head>
@@ -18,7 +20,7 @@
             </div>
             <div class="body" id="login_body">
                 <div></div>
-                <div class="content_background">
+                <div class="content_background" id="posts_container">
                     <div class="post">
                         <div class="post_left">
                             <div class="post_left_top">
@@ -26,9 +28,7 @@
                                     <p class="post_username">username</p>
                                     <p class="post_title">Header</p>
                                 </div>
-                                <div class="post_left_top_right" id="delete_img">
-                                    
-                                </div>
+                                <div class="post_left_top_right" id="delete_img"></div>
                             </div>
                             <div class="post_left_bottom">
                                 <p class="post_content">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Optio, harum cupiditate laudantium accusamus atque similique exercitationem quam, excepturi qui obcaecati veniam ea? Animi eaque dignissimos ut consequuntur nihil officiis commodi.</p>
@@ -37,6 +37,9 @@
                         <div class="post_right">
                             <div class="up_vote">
                                 <i class="fa-solid fa-arrow-up fa-2x"></i>
+                            </div>
+                            <div class="vote_number">
+                                <p>0</p>
                             </div>
                             <div class="down_vote">
                                 <i class="fa-solid fa-arrow-down fa-2x"></i>

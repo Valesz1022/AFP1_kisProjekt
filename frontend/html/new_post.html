@@ -4,14 +4,17 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Vic Explorer</title>
+        <meta http-equiv="Content-Security-Policy" content="
+        script-src 'self' 'unsafe-inline' https://kit.fontawesome.com/b2454de67f.js;">
         <link rel="stylesheet" href="../css/new_post.css">
+        <script src="../dist/new_post.js"></script>
     </head>
     <body>
         <div class="container">
             <div class="header" id="new_post_header">
                 <h1>Vicc-explorer</h1>
                 <div class="nav_buttons">
-                    <button class="back_button">Vissza</button>
+                    <button class="back_button" id="back_to_main_page">Vissza</button>
                 </div>
             </div>
             <div class="body" id="new:post_body">
@@ -31,9 +34,19 @@
                         </div>
                         <div id="row2">
                             <label for="content">Tartalom:</label>
-                            <textarea class="input_box" id="content_box" name="content" required></textarea>
+                            <textarea
+                                class="input_box"
+                                id="content_box"
+                                name="content"
+                                required
+                            ></textarea>
                         </div>
-                        <button type="submit" class="submit_button">Közzététel</button>
+                        <input
+                            type="button"
+                            class="submit_button"
+                            id="post_joke"
+                            value="Közzététel"
+                        ></input>
                     </form>
                 </div>
             </div>
