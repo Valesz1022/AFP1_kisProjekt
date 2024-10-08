@@ -69,7 +69,7 @@ async function up_vote_joke2(joke_id: string) {
             console.log("sikeres szavazás");
             let upvote_button = document.getElementsByName(`${joke_id}_upvote`)[0] as HTMLIFrameElement;
             upvote_button.classList.add('voted');
-            refresh_vote_count(joke_id);
+            refresh_vote_count2(joke_id);
             break;
         case 401:
             console.log("Nincs bejelentkezve");
@@ -98,7 +98,7 @@ async function down_vote_joke2(joke_id: string) {
             console.log("sikeres szavazás");
             let down_vote_button = document.getElementsByName(`${joke_id}_downvote`)[0] as HTMLIFrameElement;
             down_vote_button.classList.add('voted');
-            refresh_vote_count(joke_id);
+            refresh_vote_count2(joke_id);
             break;
         case 401:
             console.log("Nincs bejelentkezve");
@@ -115,6 +115,36 @@ async function down_vote_joke2(joke_id: string) {
     }
 }
 
+async function delete_vote2(joke_id: string) {
+    let response = await fetch(`${SERVER}/votes?name=${localStorage.getItem("globalUsername")}&joke_id=${joke_id}`, {
+        method: "DELETE",
+        credentials: "include"
+    });
+
+    switch (response.status) {
+        case 200:
+            let up_vote_button = document.getElementsByName(`${joke_id}_upvote`)[0] as HTMLButtonElement;
+            let down_vote_button = document.getElementsByName(`${joke_id}_downvote`)[0] as HTMLButtonElement;
+            up_vote_button.classList.remove('voted');
+            down_vote_button.classList.remove('voted');
+            console.log("Szavazás törölve");
+            refresh_vote_count2(joke_id);
+            break;
+        case 401:
+            console.log("Nincs bejelentkezve a felhasználó");
+            break;
+        case 409:
+            console.log("Nincs ilyen azonosító, vagy erre még nem szavazott");
+            break;
+        case 422:
+            console.log("Hibás paraméterek");
+            break;
+        case 500:
+            console.log("Valami hiba történt a szerveren");
+            break;
+
+    }
+}
 
 async function change_vote2(joke_id: string, vote: string) {
     let response = await fetch(`${SERVER}/jokes?name=${localStorage.getItem("globalUsername")}&joke_id=${joke_id}&vote=${vote}`, {
@@ -136,7 +166,7 @@ async function change_vote2(joke_id: string, vote: string) {
                 down_vote_button.classList.add('voted');
                 console.log("Szavazat módosítva downvote-ra");
             }
-            refresh_vote_count(joke_id);
+            refresh_vote_count2(joke_id);
             break;
         case 401:
             console.log("Nincs bejelentkezve a felhasználó");
@@ -188,19 +218,6 @@ async function get_jokes2() {
 
                 post_left_top_left.appendChild(post_username);
                 post_left_top_left.appendChild(post_title);
-
-                let post_left_top_right = document.createElement('div');
-                post_left_top_right.classList.add('post_left_top_right');
-                post_left_top_right.id = 'delete_img';
-
-                let delete_img = document.createElement('i');
-                delete_img.classList.add('fa-solid', 'fa-trash', 'fa-2x');
-                delete_img.setAttribute('id', `${joke.id}`);
-                delete_img.setAttribute('name', `${joke.id}_delete`);
-
-                post_left_top_right.appendChild(delete_img);
-                post_left_top.appendChild(post_left_top_left);
-                post_left_top.appendChild(post_left_top_right);
 
                 let post_left_bottom = document.createElement('div');
                 post_left_bottom.classList.add('post_left_bottom');
@@ -256,7 +273,7 @@ async function get_jokes2() {
                     let down_vote_button = document.getElementsByName(`${joke_id}_downvote`)[0] as HTMLButtonElement;
                     if (joke_id) {
                         if (up_vote_button.classList.contains('voted')) {
-                            delete_vote(joke_id);
+                            delete_vote2(joke_id);
                         } else if (down_vote_button.classList.contains('voted')) {
                             change_vote2(joke_id, '1');
                         } else {
@@ -272,7 +289,7 @@ async function get_jokes2() {
                     let up_vote_button = document.getElementsByName(`${joke_id}_upvote`)[0] as HTMLButtonElement;
                     if (joke_id) {
                         if (down_vote_button.classList.contains('voted')) {
-                            delete_vote(joke_id);
+                            delete_vote2(joke_id);
                         } else if (up_vote_button.classList.contains('voted')) {
                             change_vote2(joke_id, '-1');
                         } else {
