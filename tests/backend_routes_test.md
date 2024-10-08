@@ -31,7 +31,7 @@ Talált hibák száma: 1
 - Értékelés frissítése: a szerver ellenőrzi, hogy a felhasználó neve, a vicc\
   azonosítója és az értékelés típusa meg lett-e adva, ha nem akkor 422-es hibával\
   jelzi. Ha a viccet a felhasználó még nem értékelte akkor a szerver 404-es kóddal\
-  jelzi a sikertelenséget. Ha minden rendben van a kéréssel és az értékelés már
+  jelzi a sikertelenséget. Ha minden rendben van a kéréssel és az értékelés már\
   létezik a frissítendő értékelés, akkor sikeresen elmentésre kerül az új értékelés\
   és a szerver 200-as kódot küld vissza.
 - Értékelés törlése: a szerver ellenőrzi, hogy meg lett-e adva a felhasználó neve\
