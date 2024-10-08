@@ -22,7 +22,7 @@ const api = {
     }
 }
 
-const SERVER = 'http://127.0.0.1:3000'
+const SERVER = 'http://afp.sentinelpi.hu:3000'
 
 declare global {
     interface Window {
