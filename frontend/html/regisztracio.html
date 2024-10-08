@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vicc-explorer</title>
     <link rel="stylesheet" href="../css/regisztracio.css">
+    <meta http-equiv="Content-Security-Policy" content="
+    script-src 'self' 'unsafe-inline';">
 </head>
 <body>
     <div class="container">
@@ -12,7 +14,7 @@
             <h1>Vicc-explorer</h1>
             <nav>
                 <button>Regisztráció</button>
-                <button>Bejelentkezés</button>
+                <button id="nav_bar_login_button">Bejelentkezés</button>
             </nav>
         </header>
 
@@ -25,7 +27,7 @@
                 <label for="password">jelszó</label>
                 <input type="password" id="password" name="password" placeholder="********" maxlength="20">
                 
-                <button type="submit">Regisztráció</button>
+                <button id="register" type="button">Regisztráció</button>
             </form>
           <div id="error-messages" style="color: blue;"></div>
         </section>
